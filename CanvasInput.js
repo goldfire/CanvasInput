@@ -1,5 +1,5 @@
 /*!
- *  CanvasInput v1.0.0
+ *  CanvasInput v1.0.1
  *  http://goldfirestudios.com/blog/108/CanvasInput-HTML5-Canvas-Text-Input
  *
  *  (c) 2013, James Simpson of GoldFire Studios
@@ -817,8 +817,9 @@
      * @return {CanvasInput}
      */
     click: function(e, self) {
-      var x = e.offsetX || e.clientX,
-        y = e.offsetY || e.clientY;
+      var mouse = self._mousePos(e),
+        x = mouse.x,
+        y = mouse.y;
 
       if (self._endSelection) {
         delete self._endSelection;
@@ -844,8 +845,9 @@
      * @return {CanvasInput}
      */
     mousemove: function(e, self) {
-      var x = e.offsetX || e.clientX,
-        y = e.offsetY || e.clientY,
+      var mouse = self._mousePos(e),
+        x = mouse.x,
+        y = mouse.y,
         isOver = self._overInput(x, y);
 
       if (isOver && self._canvas) {
@@ -882,8 +884,9 @@
      * @param  {CanvasInput} self
      */
     mousedown: function(e, self) {
-      var x = e.offsetX || e.clientX,
-        y = e.offsetY || e.clientY,
+      var mouse = self._mousePos(e),
+        x = mouse.x,
+        y = mouse.y,
         isOver = self._overInput(x, y);
 
       // setup the 'click' event
@@ -901,8 +904,9 @@
      * @param  {CanvasInput} self
      */
     mouseup: function(e, self) {
-      var x = e.offsetX || e.clientX,
-        y = e.offsetY || e.clientY;
+      var mouse = self._mousePos(e),
+        x = mouse.x,
+        y = mouse.y;
 
       // update selection if a drag has happened
       var isSelection = self._clickPos(x, y) !== self._selectionStart;
@@ -1079,7 +1083,6 @@
         img.src = self._backgroundImage;
         img.onload = function() {
           ctx.drawImage(img, 0, 0, img.width, img.height, bw + self.shadowL, bw + self.shadowT, w, h);
-          delete img;
 
           fn();
         };
@@ -1216,6 +1219,42 @@
       }
 
       return pos;
+    },
+
+    /**
+     * Calculate the mouse position based on the event callback and the elements on the page.
+     * @param  {Event} e
+     * @return {Object}   x & y values
+     */
+    _mousePos: function(e) {
+      var elm = e.target,
+        style = document.defaultView.getComputedStyle(elm, undefined),
+        paddingLeft = parseInt(style['paddingLeft'], 10) || 0,
+        paddingTop = parseInt(style['paddingLeft'], 10) || 0,
+        borderLeft = parseInt(style['borderLeftWidth'], 10) || 0,
+        borderTop = parseInt(style['borderLeftWidth'], 10) || 0,
+        htmlTop = document.body.parentNode.offsetTop || 0,
+        htmlLeft = document.body.parentNode.offsetLeft || 0,
+        offsetX = 0,
+        offsetY = 0,
+        x, y;
+
+      // calculate the total offset
+      if (typeof elm.offsetParent !== 'unefined') {
+        do {
+          offsetX += elm.offsetLeft;
+          offsetY += elm.offsetTop;
+        } while ((elm = elm.offsetParent));
+      }
+
+      // take into account borders and padding
+      offsetX += paddingLeft + borderLeft + htmlLeft;
+      offsetY += paddingTop + borderTop + htmlTop;
+
+      return {
+        x: e.pageX - offsetX,
+        y: e.pageY - offsetY
+      };
     },
 
     /**
