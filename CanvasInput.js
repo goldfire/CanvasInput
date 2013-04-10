@@ -1,5 +1,5 @@
 /*!
- *  CanvasInput v1.0.1
+ *  CanvasInput v1.0.2
  *  http://goldfirestudios.com/blog/108/CanvasInput-HTML5-Canvas-Text-Input
  *
  *  (c) 2013, James Simpson of GoldFire Studios
@@ -1168,10 +1168,14 @@
       ctx.beginPath();
 
       ctx.moveTo(x + r, y);
-      ctx.arcTo(x + w, y, x + w, y + h, r);
-      ctx.arcTo(x + w, y + h, x, y + h, r);
-      ctx.arcTo(x, y + h, x, y, r);
-      ctx.arcTo(x, y, x + w, y, r);
+      ctx.lineTo(x + w - r, y);
+      ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+      ctx.lineTo(x + w, y + h - r);
+      ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+      ctx.lineTo(x + r, y + h);
+      ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+      ctx.lineTo(x, y + r);
+      ctx.quadraticCurveTo(x, y, x + r, y);
 
       ctx.closePath();
     },
