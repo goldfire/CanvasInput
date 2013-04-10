@@ -1,5 +1,5 @@
 /*!
- *  CanvasInput v1.0.2
+ *  CanvasInput v1.0.3
  *  http://goldfirestudios.com/blog/108/CanvasInput-HTML5-Canvas-Text-Input
  *
  *  (c) 2013, James Simpson of GoldFire Studios
@@ -699,9 +699,10 @@
         input.type = 'text';
         input.style.opacity = 0;
         input.style.position = 'absolute';
-        input.style.top = (self._x + self._extraX) + 'px';
-        input.style.left = (self._y + self._extraY) + 'px';
-        input.style.width = input.style.height = 0;
+        input.style.left = (self._x + self._extraX + (self._canvas ? self._canvas.offsetLeft : 0)) + 'px';
+        input.style.top = (self._y + self._extraY + (self._canvas ? self._canvas.offsetTop : 0)) + 'px';
+        input.style.width = self._width;
+        input.style.height = 0;
         document.body.appendChild(input);
         input.focus();
         input.addEventListener('blur', function() {
