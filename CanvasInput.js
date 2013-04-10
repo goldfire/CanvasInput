@@ -689,10 +689,14 @@
         self.render();
       }, 500);
 
+      // check if this is Chrome for Android (there is a bug with returning incorrect character key codes)
+      var nav = navigator.userAgent.toLowerCase(),
+        isChromeMobile = (nav.indexOf('chrome') >= 0 && nav.indexOf('mobile') >= 0 && nav.indexOf('android') >= 0);
+
       // add support for mobile
       var isMobile = (typeof window.orientation !== 'undefined');
-      if (isMobile && document && document.createElement && (input = document.createElement('input'))) {
-        input.type = 'test';
+      if (isMobile && !isChromeMobile && document && document.createElement && (input = document.createElement('input'))) {
+        input.type = 'text';
         input.style.opacity = 0;
         input.style.position = 'absolute';
         input.style.top = (self._x + self._extraX) + 'px';
