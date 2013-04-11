@@ -1,5 +1,5 @@
 /*!
- *  CanvasInput v1.0.3
+ *  CanvasInput v1.0.5
  *  http://goldfirestudios.com/blog/108/CanvasInput-HTML5-Canvas-Text-Input
  *
  *  (c) 2013, James Simpson of GoldFire Studios
@@ -103,6 +103,15 @@
         self.mouseup(e, self);
       }, false);
     }
+
+    // setup a global mouseup to blur the input outside of the canvas
+    window.addEventListener('mouseup', function(e) {
+      e = e || window.event;
+
+      if (self._hasFocus && !self._mouseDown) {
+        self.blur();
+      }
+    }, true);
 
     // setup the keydown listener
     window.addEventListener('keydown', function(e) {
@@ -347,6 +356,7 @@
       if (typeof data !== 'undefined') {
         self._width = data;
         self._calcWH();
+        self._updateCanvasWH();
 
         return self.render();
       } else {
@@ -365,6 +375,7 @@
       if (typeof data !== 'undefined') {
         self._height = data;
         self._calcWH();
+        self._updateCanvasWH();
 
         return self.render();
       } else {
@@ -383,6 +394,7 @@
       if (typeof data !== 'undefined') {
         self._padding = data;
         self._calcWH();
+        self._updateCanvasWH();
 
         return self.render();
       } else {
@@ -401,6 +413,7 @@
       if (typeof data !== 'undefined') {
         self._borderWidth = data;
         self._calcWH();
+        self._updateCanvasWH();
 
         return self.render();
       } else {
@@ -524,6 +537,8 @@
         self._calcWH();
 
         if (!doReturn) {
+          self._updateCanvasWH();
+
           return self.render();
         }
       } else {
@@ -1154,6 +1169,26 @@
       // calculate the full width and height with padding, borders and shadows
       self.outerW = self._width + self._padding * 2 + self._borderWidth * 2 + self.shadowW;
       self.outerH = self._height + self._padding * 2 + self._borderWidth * 2 + self.shadowH;
+    },
+
+    /**
+     * Update the width and height of the off-DOM canvas when attributes are changed.
+     */
+    _updateCanvasWH: function() {
+      var self = this,
+        oldW = self._renderCanvas.width,
+        oldH = self._renderCanvas.height;
+
+      // update off-DOM canvas
+      self._renderCanvas.setAttribute('width', self.outerW);
+      self._renderCanvas.setAttribute('height', self.outerH);
+      self._shadowCanvas.setAttribute('width', self._width + self._padding * 2);
+      self._shadowCanvas.setAttribute('height', self._height + self._padding * 2);
+
+      // clear the main canvas
+      if (self._ctx) {
+        self._ctx.clearRect(self._x, self._y, oldW, oldH);
+      }
     },
 
     /**
