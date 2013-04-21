@@ -1146,13 +1146,16 @@
 
     /**
      * Clip the text string to only return what fits in the visible text box.
+     * @param  {String} value The text to clip.
      * @return {String} The clipped text.
      */
-    _clipText: function() {
-      var self = this,
-        textWidth = self._textWidth(self._value),
+    _clipText: function(value) {
+      var self = this;
+      value = (typeof value === 'undefined') ? self._value : value;
+
+      var textWidth = self._textWidth(value),
         fillPer = textWidth / (self._width - self._padding),
-        text = fillPer > 1 ? self._value.substr(-1 * Math.floor(self._value.length / fillPer)) : self._value;
+        text = fillPer > 1 ? value.substr(-1 * Math.floor(value.length / fillPer)) : value;
 
       return text;
     },
@@ -1256,10 +1259,16 @@
      * @return {Number}   Cursor position.
      */
     _clickPos: function(x, y) {
-      var self = this;
+      var self = this,
+        value = self._value;
+
+      // don't count placeholder text in this
+      if (self._value === self._placeHolder) {
+        value = '';
+      }
 
       // determine where the click was made along the string
-      var text = self._clipText(self._value),
+      var text = self._clipText(value),
         totalW = 0,
         pos = text.length;
 
