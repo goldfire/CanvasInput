@@ -74,6 +74,7 @@ var input = new CanvasInput({
 * **fontWeight**: `String` *(`normal` by default)* Font weight such as `bold` or `normal`.
 * **fontStyle**: `String` *(`normal` by default)* Font style such as `italic` or `normal`.
 * **readonly**: `Boolean` *(`false` by default)* Set to `true` to disable user input.
+* **maxlength**: `Number` *(`null` by default)* Sets the max length of characters.
 * **width**: `Number` *(`150` by default)* The width of the text box (just like in the DOM, padding, borders and shadows add onto this width).
 * **height**: `Number` *(`14` by default)* The height of the text box (just like in the DOM, padding, borders and shadows add onto this height).
 * **padding**: `Number` *(`5` by default)* The padding in pixels around all 4 sides of the text input area.
@@ -91,6 +92,8 @@ var input = new CanvasInput({
 * **onsubmit**: `Function` *(`function() {}` by default)* Callback fires when user hits the enter key.
 * **onkeydown**: `Function` *(`function() {}` by default)* Callback fires on key down.
 * **onkeyup**: `Function` *(`function() {}` by default)* Callback fires on key up.
+* **onfocus**: `Function` *(`function() {}` by default)* Callback fires on focus.
+* **onblur**: `Function` *(`function() {}` by default)* Callback fires on blur (un-focus).
 
 ### Methods
 In addition to getter/setter methods for each of the above properties, the following methods have also been made available.

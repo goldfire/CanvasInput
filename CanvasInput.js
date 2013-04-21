@@ -1,5 +1,5 @@
 /*!
- *  CanvasInput v1.0.5
+ *  CanvasInput v1.0.6
  *  http://goldfirestudios.com/blog/108/CanvasInput-HTML5-Canvas-Text-Input
  *
  *  (c) 2013, James Simpson of GoldFire Studios
@@ -33,6 +33,7 @@
     self._fontWeight = o.fontWeight || 'normal';
     self._fontStyle = o.fontStyle || 'normal';
     self._readonly = o.readonly || false;
+    self._maxlength = o.maxlength || null;
     self._width = o.width || 150;
     self._height = o.height || self._fontSize;
     self._padding = o.padding >= 0 ? o.padding : 5;
@@ -48,6 +49,8 @@
     self._onsubmit = o.onsubmit || function() {};
     self._onkeydown = o.onkeydown || function() {};
     self._onkeyup = o.onkeyup || function() {};
+    self._onfocus = o.onfocus || function() {};
+    self._onblur = o.onblur || function() {};
     self._cursor = false;
     self._cursorPos = 0;
     self._hasFocus = false;
@@ -677,6 +680,8 @@
         return;
       }
 
+      self._onfocus(self);
+
       // remove selection
       if (!self._selectionUpdated) {
         self._selection = [0, 0];
@@ -737,6 +742,8 @@
      */
     blur: function(_this) {
       var self = _this || this;
+
+      self._onblur(self);
 
       if (self._cursorInterval) {
         clearInterval(self._cursorInterval);
@@ -819,6 +826,11 @@
         }, 10);
       } else if (key = self._mapCodeToKey(isShift, keyCode)) {
         self._clearSelection();
+
+        // enforce the max length
+        if (self._maxlength && self._maxlength <= self._value.length) {
+          return;
+        }
 
         startText = self._value.substr(0, self._cursorPos);
         endText = self._value.substr(self._cursorPos);
