@@ -1,5 +1,5 @@
 /*!
- *  CanvasInput v1.0.7
+ *  CanvasInput v1.0.8
  *  http://goldfirestudios.com/blog/108/CanvasInput-HTML5-Canvas-Text-Input
  *
  *  (c) 2013, James Simpson of GoldFire Studios
@@ -1379,7 +1379,27 @@
         if (keyCode >= 65 && keyCode <= 90) {
           key = String.fromCharCode(keyCode).toLowerCase();
         } else {
-          if (keyCode === 188) {
+          if (keyCode === 96) {
+            key = '0';
+          } else if (keyCode === 97) {
+            key = '1';
+          } else if (keyCode === 98) {
+            key = '2';
+          } else if (keyCode === 99) {
+            key = '3';
+          } else if (keyCode === 100) {
+            key = '4';
+          } else if (keyCode === 101) {
+            key = '5';
+          } else if (keyCode === 102) {
+            key = '6';
+          } else if (keyCode === 103) {
+            key = '7';
+          } else if (keyCode === 104) {
+            key = '8';
+          } else if (keyCode === 105) {
+            key = '9';
+          } else if (keyCode === 188) {
             key = ',';
           } else if (keyCode === 190) {
             key = '.';
