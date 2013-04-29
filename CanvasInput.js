@@ -1,5 +1,5 @@
 /*!
- *  CanvasInput v1.0.8
+ *  CanvasInput v1.0.9
  *  http://goldfirestudios.com/blog/108/CanvasInput-HTML5-Canvas-Text-Input
  *
  *  (c) 2013, James Simpson of GoldFire Studios
@@ -611,7 +611,7 @@
       if (typeof data !== 'undefined') {
         self._value = data;
 
-        return self.render();
+        return self.focus();
       } else {
         return self._value;
       }
@@ -680,7 +680,10 @@
         return;
       }
 
-      self._onfocus(self);
+      // only fire the focus event when going from unfocussed
+      if (!self._hasFocus) {
+        self._onfocus(self);
+      }
 
       // remove selection
       if (!self._selectionUpdated) {
@@ -1157,7 +1160,7 @@
         fillPer = textWidth / (self._width - self._padding),
         text = fillPer > 1 ? value.substr(-1 * Math.floor(value.length / fillPer)) : value;
 
-      return text;
+      return text + '';
     },
 
     /**
