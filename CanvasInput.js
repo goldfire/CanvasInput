@@ -1,5 +1,5 @@
 /*!
- *  CanvasInput v1.0.10
+ *  CanvasInput v1.0.11
  *  http://goldfirestudios.com/blog/108/CanvasInput-HTML5-Canvas-Text-Input
  *
  *  (c) 2013, James Simpson of GoldFire Studios
@@ -805,6 +805,14 @@
             endText = self._value.substr(self._cursorPos, self._value.length);
             self._value = startText + endText;
             self._cursorPos--;
+          }
+        }
+      } else if (keyCode === 46) { // delete
+        if (!self._clearSelection()) {
+          if (self._cursorPos < self._value.length) {
+            startText = self._value.substr(0, self._cursorPos);
+            endText = self._value.substr(self._cursorPos + 1, self._value.length);
+            self._value = startText + endText;
           }
         }
       } else if (keyCode === 37) { // left arrow key
