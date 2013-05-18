@@ -1,5 +1,5 @@
 /*!
- *  CanvasInput v1.0.11
+ *  CanvasInput v1.0.13
  *  http://goldfirestudios.com/blog/108/CanvasInput-HTML5-Canvas-Text-Input
  *
  *  (c) 2013, James Simpson of GoldFire Studios
@@ -45,7 +45,7 @@
     self._innerShadow = o.innerShadow || '0px 0px 4px rgba(0, 0, 0, 0.4)';
     self._selectionColor = o.selectionColor || 'rgba(179, 212, 253, 0.8)';
     self._placeHolder = o.placeHolder || '';
-    self._value = o.value || self._placeHolder;
+    self._value = (o.value || self._placeHolder) + '';
     self._onsubmit = o.onsubmit || function() {};
     self._onkeydown = o.onkeydown || function() {};
     self._onkeyup = o.onkeyup || function() {};
@@ -830,11 +830,13 @@
       } else if (keyCode === 13) { // enter key
         self._onsubmit(e, self);
       } else if (keyCode === 9) { // tab key
-        var next = (inputs[self._inputsIndex + 1]) ? self._inputsIndex + 1 : 0;
-        self.blur();
-        setTimeout(function() {
-          inputs[next].focus();
-        }, 10);
+        if (inputs.length > 1) {
+          var next = (inputs[self._inputsIndex + 1]) ? self._inputsIndex + 1 : 0;
+          self.blur();
+          setTimeout(function() {
+            inputs[next].focus();
+          }, 10);
+        }
       } else if (key = self._mapCodeToKey(isShift, keyCode)) {
         self._clearSelection();
 
