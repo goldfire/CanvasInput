@@ -1,5 +1,5 @@
 /*!
- *  CanvasInput v1.0.14
+ *  CanvasInput v1.0.15
  *  http://goldfirestudios.com/blog/108/CanvasInput-HTML5-Canvas-Text-Input
  *
  *  (c) 2013, James Simpson of GoldFire Studios
@@ -678,6 +678,13 @@
       // if this is readonly, don't allow it to get focus
       if (self._readonly) {
         return;
+      }
+
+      // remove focus from all other inputs
+      for (var i=0; i<inputs.length; i++) {
+        if (inputs[i]._hasFocus) {
+          inputs[i].blur();
+        }
       }
 
       // only fire the focus event when going from unfocussed
