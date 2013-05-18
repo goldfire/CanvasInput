@@ -1,5 +1,5 @@
 /*!
- *  CanvasInput v1.0.13
+ *  CanvasInput v1.0.14
  *  http://goldfirestudios.com/blog/108/CanvasInput-HTML5-Canvas-Text-Input
  *
  *  (c) 2013, James Simpson of GoldFire Studios
@@ -609,7 +609,7 @@
       var self = this;
 
       if (typeof data !== 'undefined') {
-        self._value = data;
+        self._value = data + '';
 
         return self.focus();
       } else {
