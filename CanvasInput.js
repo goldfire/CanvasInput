@@ -610,6 +610,10 @@
 
       if (typeof data !== 'undefined') {
         self._value = data + '';
+
+        // update the cursor position
+        self._cursorPos = self._clipText().length;
+
         self.render();
 
         return self;
