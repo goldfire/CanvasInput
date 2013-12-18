@@ -1,5 +1,5 @@
 /*!
- *  CanvasInput v1.0.17
+ *  CanvasInput v1.1.0
  *  http://goldfirestudios.com/blog/108/CanvasInput-HTML5-Canvas-Text-Input
  *
  *  (c) 2013, James Simpson of GoldFire Studios
@@ -115,9 +115,21 @@
         self.blur();
       }
     }, true);
+    
+    // create the hidden input element
+    self._hiddenInput = document.createElement('input');
+    self._hiddenInput.type = 'text';
+    self._hiddenInput.style.position = 'absolute';
+    self._hiddenInput.style.opacity = 0;
+    self._hiddenInput.style.left = (self._x + self._extraX + (self._canvas ? self._canvas.offsetLeft : 0)) + 'px';
+    self._hiddenInput.style.top = (self._y + self._extraY + (self._canvas ? self._canvas.offsetTop : 0)) + 'px';
+    self._hiddenInput.style.width = self._width;
+    self._hiddenInput.style.zIndex = 0;
+    document.body.appendChild(self._hiddenInput);
+    self._hiddenInput.value = self._value;
 
     // setup the keydown listener
-    window.addEventListener('keydown', function(e) {
+    self._hiddenInput.addEventListener('keydown', function(e) {
       e = e || window.event;
 
       if (self._hasFocus) {
@@ -125,28 +137,17 @@
       }
     });
 
-    // setup the keydown listener
-    window.addEventListener('keyup', function(e) {
+    // setup the keyup listener
+    self._hiddenInput.addEventListener('keyup', function(e) {
       e = e || window.event;
+
+      // update the canvas input state information from the hidden input
+      self._value = self._hiddenInput.value;
+      self._cursorPos = self._hiddenInput.selectionStart;
+      self.render();
 
       if (self._hasFocus) {
         self._onkeyup(e, self);
-      }
-    });
-
-    // setup the 'paste' listener
-    window.addEventListener('paste', function(e) {
-      e = e || window.event;
-
-      if (self._hasFocus) {
-        var text = e.clipboardData.getData('text/plain'),
-          startText = self._value.substr(0, self._cursorPos),
-          endText = self._value.substr(self._cursorPos);
-
-        self._value = startText + text + endText;
-        self._cursorPos += text.length;
-
-        self.render();
       }
     });
 
@@ -610,6 +611,7 @@
 
       if (typeof data !== 'undefined') {
         self._value = data + '';
+        self._hiddenInput.value = data + '';
 
         // update the cursor position
         self._cursorPos = self._clipText().length;
@@ -710,6 +712,7 @@
       // clear the place holder
       if (self._placeHolder === self._value) {
         self._value = '';
+        self._hiddenInput.value = '';
       }
 
       self._hasFocus = true;
@@ -746,6 +749,12 @@
       } else if (isMobile) {
         self.value(prompt(self._placeHolder) || '');
       }
+
+      // move the real focus to the hidden input
+      var hasSelection = (self._selection[0] > 0 || self._selection[1] > 0);
+      self._hiddenInput.focus();
+      self._hiddenInput.selectionStart = hasSelection ? self._selection[0] : self._cursorPos;
+      self._hiddenInput.selectionEnd = hasSelection ? self._selection[1] : self._cursorPos;
 
       return self.render();
     },
@@ -798,6 +807,8 @@
       // add support for Ctrl/Cmd+A selection
       if (keyCode === 65 && (e.ctrlKey || e.metaKey)) {
         self._selection = [0, self._value.length];
+        self._hiddenInput.selectionStart = 0;
+        self._hiddenInput.selectionEnd = self._value.length;
         e.preventDefault();
         return self.render();
       }
@@ -807,41 +818,11 @@
         return self;
       }
 
-      // prevent the default action
-      e.preventDefault();
-
-      if (keyCode === 8) { // backspace
-        if (!self._clearSelection()) {
-          if (self._cursorPos > 0) {
-            startText = self._value.substr(0, self._cursorPos - 1);
-            endText = self._value.substr(self._cursorPos, self._value.length);
-            self._value = startText + endText;
-            self._cursorPos--;
-          }
-        }
-      } else if (keyCode === 46) { // delete
-        if (!self._clearSelection()) {
-          if (self._cursorPos < self._value.length) {
-            startText = self._value.substr(0, self._cursorPos);
-            endText = self._value.substr(self._cursorPos + 1, self._value.length);
-            self._value = startText + endText;
-          }
-        }
-      } else if (keyCode === 37) { // left arrow key
-        if (self._cursorPos > 0) {
-          self._cursorPos--;
-          self._cursor = true;
-          self._selection = [0, 0];
-        }
-      } else if (keyCode === 39) { // right arrow key
-        if (self._cursorPos < self._value.length) {
-          self._cursorPos++;
-          self._cursor = true;
-          self._selection = [0, 0];
-        }
-      } else if (keyCode === 13) { // enter key
+      if (keyCode === 13) { // enter key
+        e.preventDefault();
         self._onsubmit(e, self);
       } else if (keyCode === 9) { // tab key
+        e.preventDefault();
         if (inputs.length > 1) {
           var next = (inputs[self._inputsIndex + 1]) ? self._inputsIndex + 1 : 0;
           self.blur();
@@ -849,19 +830,12 @@
             inputs[next].focus();
           }, 10);
         }
-      } else if (key = self._mapCodeToKey(isShift, keyCode)) {
-        self._clearSelection();
-
-        // enforce the max length
-        if (self._maxlength && self._maxlength <= self._value.length) {
-          return;
-        }
-
-        startText = (self._value) ? self._value.substr(0, self._cursorPos) : '';
-        endText = (self._value) ? self._value.substr(self._cursorPos) : '';
-        self._value = startText + key + endText;
-        self._cursorPos++;
       }
+
+      // update the canvas input state information from the hidden input
+      self._value = self._hiddenInput.value;
+      self._cursorPos = self._hiddenInput.selectionStart;
+      self._selection = [0, 0];
 
       return self.render();
     },
@@ -1345,114 +1319,6 @@
         x: e.pageX - offsetX,
         y: e.pageY - offsetY
       };
-    },
-
-    /**
-     * Translate a keycode into the correct keyboard character.
-     * @param  {Boolean} isShift True if the shift key is being pressed.
-     * @param  {Number}  keyCode The character code.
-     * @return {String}          The translated character.
-     */
-    _mapCodeToKey: function(isShift, keyCode) {
-      var self = this,
-        blockedKeys = [8, 9, 13, 16, 17, 18, 20, 27, 91, 92],
-        key = '';
-
-      // block keys that we don't want to type
-      for (var i=0; i<blockedKeys.length; i++) {
-        if (keyCode === blockedKeys[i]) {
-          return;
-        }
-      }
-
-      // make sure we are getting the correct input
-      if (typeof isShift !== 'boolean' || typeof keyCode !== 'number') {
-        return;
-      }
-
-      var charMap = {
-        32: ' ',
-        48: ')',
-        49: '!',
-        50: '@',
-        51: '#',
-        52: '$',
-        53: '%',
-        54: '^',
-        55: '&',
-        56: '*',
-        57: '(',
-        59: ':',
-        107: '+',
-        189: '_',
-        186: ':',
-        187: '+',
-        188: '<',
-        190: '>',
-        191: '?',
-        192: '~',
-        219: '{',
-        220: '|',
-        221: '}',
-        222: '"'
-      };
-
-      // convert the code to a character
-      if (isShift) {
-        key = (keyCode >= 65 && keyCode <= 90) ? String.fromCharCode(keyCode) : charMap[keyCode];
-      } else {
-        if (keyCode >= 65 && keyCode <= 90) {
-          key = String.fromCharCode(keyCode).toLowerCase();
-        } else {
-          if (keyCode === 96) {
-            key = '0';
-          } else if (keyCode === 97) {
-            key = '1';
-          } else if (keyCode === 98) {
-            key = '2';
-          } else if (keyCode === 99) {
-            key = '3';
-          } else if (keyCode === 100) {
-            key = '4';
-          } else if (keyCode === 101) {
-            key = '5';
-          } else if (keyCode === 102) {
-            key = '6';
-          } else if (keyCode === 103) {
-            key = '7';
-          } else if (keyCode === 104) {
-            key = '8';
-          } else if (keyCode === 105) {
-            key = '9';
-          } else if (keyCode === 188) {
-            key = ',';
-          } else if (keyCode === 190) {
-            key = '.';
-          } else if (keyCode === 191) {
-            key = '/';
-          } else if (keyCode === 192) {
-            key = '`';
-          } else if (keyCode === 220) {
-            key = '\\';
-          } else if (keyCode === 187) {
-            key = '=';
-          } else if (keyCode === 189) {
-            key = '-';
-          } else if (keyCode === 222) {
-            key = '\'';
-          } else if (keyCode === 186) {
-            key = ';';
-          } else if (keyCode === 219) {
-            key = '[';
-          } else if (keyCode === 221) {
-            key = ']';
-          } else {
-            key = String.fromCharCode(keyCode);
-          }
-        }
-      }
-
-      return key;
     }
   };
 })();
