@@ -10,11 +10,13 @@ More documentation, examples and demos can be found at **[CanvasInput](http://go
 * Full CSS-type styling
 * Text selection
 * Tab between inputs
-* Paste in text
+* Full native copy/paste support
 * Text place holder support
 * Readonly property support
 * Auto text scrolling
 * Uses an off-DOM canvas for efficiency
+* Supports all keyboard types
+* Caps lock support
 
 ### Browser Compatibility
 Tested in the following browsers/versions:
