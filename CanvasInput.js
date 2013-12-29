@@ -125,6 +125,7 @@
     self._hiddenInput.style.top = (self._y + self._extraY + (self._canvas ? self._canvas.offsetTop : 0)) + 'px';
     self._hiddenInput.style.width = self._width;
     self._hiddenInput.style.zIndex = 0;
+    self._hiddenInput.maxLength = self._maxlength;
     document.body.appendChild(self._hiddenInput);
     self._hiddenInput.value = self._value;
 
