@@ -43,7 +43,7 @@ var input = new CanvasInput({
 
 ##### More styling options:
 ```html
-<canvas id="canvas" width="200" height="50"></canvas>
+<canvas id="canvas" width="350" height="50"></canvas>
 ```
 ```javascript
 var input = new CanvasInput({
