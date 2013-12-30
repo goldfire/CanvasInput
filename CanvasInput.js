@@ -1,5 +1,5 @@
 /*!
- *  CanvasInput v1.1.1
+ *  CanvasInput v1.1.2
  *  http://goldfirestudios.com/blog/108/CanvasInput-HTML5-Canvas-Text-Input
  *
  *  (c) 2013, James Simpson of GoldFire Studios
@@ -125,7 +125,9 @@
     self._hiddenInput.style.top = (self._y + self._extraY + (self._canvas ? self._canvas.offsetTop : 0)) + 'px';
     self._hiddenInput.style.width = self._width;
     self._hiddenInput.style.zIndex = 0;
-    self._hiddenInput.maxLength = self._maxlength;
+    if (self._maxlength) {
+      self._hiddenInput.maxLength = self._maxlength;
+    }
     document.body.appendChild(self._hiddenInput);
     self._hiddenInput.value = self._value;
 
