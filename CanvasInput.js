@@ -1,8 +1,8 @@
 /*!
- *  CanvasInput v1.1.2
+ *  CanvasInput v1.1.3
  *  http://goldfirestudios.com/blog/108/CanvasInput-HTML5-Canvas-Text-Input
  *
- *  (c) 2013, James Simpson of GoldFire Studios
+ *  (c) 2013-2014, James Simpson of GoldFire Studios
  *  goldfirestudios.com
  *
  *  MIT License
@@ -623,7 +623,7 @@
 
         return self;
       } else {
-        return self._value;
+        return (self._value === self._placeHolder) ? '' : self._value;
       }
     },
 
