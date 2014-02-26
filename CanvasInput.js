@@ -1307,7 +1307,7 @@
         x, y;
 
       // calculate the total offset
-      if (typeof elm.offsetParent !== 'unefined') {
+      if (typeof elm.offsetParent !== 'undefined') {
         do {
           offsetX += elm.offsetLeft;
           offsetY += elm.offsetTop;
