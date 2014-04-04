@@ -1,5 +1,5 @@
 /*!
- *  CanvasInput v1.1.3
+ *  CanvasInput v1.1.4
  *  http://goldfirestudios.com/blog/108/CanvasInput-HTML5-Canvas-Text-Input
  *
  *  (c) 2013-2014, James Simpson of GoldFire Studios
@@ -1019,10 +1019,9 @@
         }
 
         // draw the cursor
-        ctx.fillStyle = (self._placeHolder === self._value && self._value !== '') ? self._placeHolderColor : self._fontColor;
         if (self._cursor) {
           var cursorOffset = self._textWidth(text.substring(0, self._cursorPos));
-
+          ctx.fillStyle = self._fontColor;
           ctx.fillRect(paddingBorder + cursorOffset, paddingBorder, 1, self._height);
         }
 
@@ -1030,6 +1029,10 @@
         var textX = self._padding + self._borderWidth + self.shadowL,
           textY = Math.round(paddingBorder + self._height / 2);
 
+        // only remove the placeholder text if they have typed something
+        text = (text === '' && self._placeHolder) ? self._placeHolder : text;
+
+        ctx.fillStyle = (self._value !== '' && self._value !== self._placeHolder) ? self._fontColor : self._placeHolderColor;
         ctx.font = self._fontStyle + ' ' + self._fontWeight + ' ' + self._fontSize + 'px ' + self._fontFamily;
         ctx.textAlign = 'left';
         ctx.textBaseline = 'middle';
