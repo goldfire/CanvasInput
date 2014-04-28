@@ -778,6 +778,7 @@
       self._hasFocus = false;
       self._cursor = false;
       self._selection = [0, 0];
+      self._hiddenInput.blur();
 
       // fill the place holder
       if (self._value === '') {
