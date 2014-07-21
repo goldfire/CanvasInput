@@ -125,6 +125,7 @@
     self._hiddenInput.style.left = (self._x + self._extraX + (self._canvas ? self._canvas.offsetLeft : 0)) + 'px';
     self._hiddenInput.style.top = (self._y + self._extraY + (self._canvas ? self._canvas.offsetTop : 0)) + 'px';
     self._hiddenInput.style.width = self._width + 'px';
+    self._hiddenInput.style.height = self._height + 'px';
     self._hiddenInput.style.zIndex = 0;
     if (self._maxlength) {
       self._hiddenInput.maxLength = self._maxlength;
