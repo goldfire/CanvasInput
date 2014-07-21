@@ -1,5 +1,5 @@
 /*!
- *  CanvasInput v1.1.4
+ *  CanvasInput v1.1.5
  *  http://goldfirestudios.com/blog/108/CanvasInput-HTML5-Canvas-Text-Input
  *
  *  (c) 2013-2014, James Simpson of GoldFire Studios
