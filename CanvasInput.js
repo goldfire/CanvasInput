@@ -121,6 +121,7 @@
     self._hiddenInput.type = 'text';
     self._hiddenInput.style.position = 'absolute';
     self._hiddenInput.style.opacity = 0;
+    self._hiddenInput.style.pointerEvents = 'none';
     self._hiddenInput.style.left = (self._x + self._extraX + (self._canvas ? self._canvas.offsetLeft : 0)) + 'px';
     self._hiddenInput.style.top = (self._y + self._extraY + (self._canvas ? self._canvas.offsetTop : 0)) + 'px';
     self._hiddenInput.style.width = self._width;
