@@ -106,7 +106,7 @@ In addition to getter/setter methods for each of the above properties, the follo
 * **renderCanvas**: Returns the off-DOM canvas, allowing you to draw its contents to whatever canvas you would like (or do whatever else with the data that you want). 
 * **render**: This rerenders the full input box.
 * **selectText**: Select part or all of the text in the input box programmatically.
-  * *pos*: `Array` (optional) Leave empty to select all text, or pass range values in this form: `[start, end]`.
+  * *range*: `Array` (optional) Leave empty to select all text, or pass range values in this form: `[start, end]`.
 * **destroy**: Destroy the input and stop rendering it.
 
 ## License
