@@ -788,9 +788,7 @@
 
       // add support for Ctrl/Cmd+A selection
       if (keyCode === 65 && (e.ctrlKey || e.metaKey)) {
-        self._selection = [0, self._value.length];
-        self._hiddenInput.selectionStart = 0;
-        self._hiddenInput.selectionEnd = self._value.length;
+        self.selectText();
         e.preventDefault();
         return self.render();
       }
@@ -932,6 +930,26 @@
       }
 
       self.click(e, self);
+    },
+
+    /**
+     * Select a range of text in the input.
+     * @param  {Array} range (optional) Leave blank to select all. Format: [start, end]
+     * @return {CanvasInput}
+     */
+    selectText: function(range) {
+      var self = this,
+        range = range || [0, self._value.length];
+
+      // select the range of text specified (or all if none specified)
+      setTimeout(function() {
+        self._selection = [range[0], range[1]];
+        self._hiddenInput.selectionStart = range[0];
+        self._hiddenInput.selectionEnd = range[1];
+        self.render();
+      }, 1);
+
+      return self;
     },
 
     /**
