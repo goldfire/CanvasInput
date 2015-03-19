@@ -686,11 +686,6 @@
     focus: function(pos) {
       var self = this;
 
-      // if this is readonly, don't allow it to get focus
-      if (self._readonly) {
-        return;
-      }
-
       // only fire the focus event when going from unfocussed
       if (!self._hasFocus) {
         self._onfocus(self);
@@ -710,6 +705,15 @@
         delete self._selectionUpdated;
       }
 
+      // if this is readonly, don't allow it to get focus
+      self._hasFocus = true;
+      if (self._readonly) {
+        self._hiddenInput.readOnly = true;
+        return;
+      } else {
+        self._hiddenInput.readOnly = false;
+      }
+
       // update the cursor position
       self._cursorPos = (typeof pos === 'number') ? pos : self._clipText().length;
 
@@ -719,7 +723,6 @@
         self._hiddenInput.value = '';
       }
 
-      self._hasFocus = true;
       self._cursor = true;
 
       // setup cursor interval
@@ -779,7 +782,7 @@
         startText, endText;
 
       // make sure the correct text field is being updated
-      if (!self._hasFocus) {
+      if (self._readonly || !self._hasFocus) {
         return;
       }
 
