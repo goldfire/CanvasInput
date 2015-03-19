@@ -1,5 +1,5 @@
 /*!
- *  CanvasInput v1.1.6
+ *  CanvasInput v1.2.0
  *  http://goldfirestudios.com/blog/108/CanvasInput-HTML5-Canvas-Text-Input
  *
  *  (c) 2013-2015, James Simpson of GoldFire Studios
@@ -978,6 +978,10 @@
         sw = self.shadowW,
         sh = self.shadowH;
 
+      if (!ctx) {
+        return;
+      }
+
       // clear the canvas
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
@@ -1092,6 +1096,32 @@
         return self;
 
       });
+    },
+
+    /**
+     * Destroy this input and stop rendering it.
+     */
+    destroy: function() {
+      var self = this;
+
+      // pull from the inputs array
+      var index = inputs.indexOf(self);
+      if (index) {
+        inputs.splice(index, 1);
+      }
+
+      // remove focus
+      if (self._hasFocus) {
+        self.blur();
+      }
+
+      // remove the hidden input box
+      document.body.removeChild(self._hiddenInput);
+
+      // remove off-DOM canvas
+      self._renderCanvas = null;
+      self._shadowCanvas = null;
+      self._renderCtx = null;
     },
 
     /**
