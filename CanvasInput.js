@@ -1106,7 +1106,7 @@
 
       // pull from the inputs array
       var index = inputs.indexOf(self);
-      if (index) {
+      if (index != -1) {
         inputs.splice(index, 1);
       }
 
