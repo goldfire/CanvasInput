@@ -165,6 +165,51 @@
   };
 
   // setup the prototype
+  
+  /**
+   * Attaches basic getter/setter methods for a given property name to the CanvasInput
+   * @param {String}  propName  Name of property for which to create get/set method
+   * @return {Mixed}  CanvasInput or current property value
+   */
+  var createGetterSetter = function(propName) {
+    var self = this;
+    var privatePropName = '_' + propName;
+    
+    self[propName] = function getterSetter(data) {
+      if (typeof data !== 'undefined') {
+        self[privatePropName] = data;
+        
+        return self.render();
+      } else {
+        return self[privatePropName];
+      }
+    };
+  };
+  
+  // properties which use the basic getter/setter method
+  var basicProperties = [
+    'x', // The pixel position along the x-coordinate.
+    'y', // The pixel position along the y-coordinate.
+    'extraX', // The extra x-coordinate position (generally used when no canvas is specified).
+    'extraY', // The extra y-coordinate position (generally used when no canvas is specified).
+    'fontSize',
+    'fontFamily',
+    'fontColor',
+    'placeHolderColor',
+    'fontWeight',
+    'fontStyle',
+    'borderColor',
+    'borderRadius',
+    'backgroundColor',
+    'innerShadow', // In the format of a CSS box shadow (1px 1px 1px rgba(0, 0, 0.5)).
+    'selectionColor',
+    'placeHolder',
+  ];
+  
+  basicProperties.forEach(function() {
+    createGetterSetter.bind(CanvasInput.prototype);
+  });
+
   CanvasInput.prototype = {
     /**
      * Get/set the main canvas.
@@ -181,176 +226,6 @@
         return self.render();
       } else {
         return self._canvas;
-      }
-    },
-
-    /**
-     * Get/set the x-position.
-     * @param  {Number} data The pixel position along the x-coordinate.
-     * @return {Mixed}      CanvasInput or current x-value.
-     */
-    x: function(data) {
-      var self = this;
-
-      if (typeof data !== 'undefined') {
-        self._x = data;
-
-        return self.render();
-      } else {
-        return self._x;
-      }
-    },
-
-    /**
-     * Get/set the y-position.
-     * @param  {Number} data The pixel position along the y-coordinate.
-     * @return {Mixed}      CanvasInput or current y-value.
-     */
-    y: function(data) {
-      var self = this;
-
-      if (typeof data !== 'undefined') {
-        self._y = data;
-
-        return self.render();
-      } else {
-        return self._y;
-      }
-    },
-
-    /**
-     * Get/set the extra x-position (generally used when no canvas is specified).
-     * @param  {Number} data The pixel position along the x-coordinate.
-     * @return {Mixed}      CanvasInput or current x-value.
-     */
-    extraX: function(data) {
-      var self = this;
-
-      if (typeof data !== 'undefined') {
-        self._extraX = data;
-
-        return self.render();
-      } else {
-        return self._extraX;
-      }
-    },
-
-    /**
-     * Get/set the extra y-position (generally used when no canvas is specified).
-     * @param  {Number} data The pixel position along the y-coordinate.
-     * @return {Mixed}      CanvasInput or current y-value.
-     */
-    extraY: function(data) {
-      var self = this;
-
-      if (typeof data !== 'undefined') {
-        self._extraY = data;
-
-        return self.render();
-      } else {
-        return self._extraY;
-      }
-    },
-
-    /**
-     * Get/set the font size.
-     * @param  {Number} data Font size.
-     * @return {Mixed}      CanvasInput or current font size.
-     */
-    fontSize: function(data) {
-      var self = this;
-
-      if (typeof data !== 'undefined') {
-        self._fontSize = data;
-
-        return self.render();
-      } else {
-        return self._fontSize;
-      }
-    },
-
-    /**
-     * Get/set the font family.
-     * @param  {String} data Font family.
-     * @return {Mixed}      CanvasInput or current font family.
-     */
-    fontFamily: function(data) {
-      var self = this;
-
-      if (typeof data !== 'undefined') {
-        self._fontFamily = data;
-
-        return self.render();
-      } else {
-        return self._fontFamily;
-      }
-    },
-
-    /**
-     * Get/set the font color.
-     * @param  {String} data Font color.
-     * @return {Mixed}      CanvasInput or current font color.
-     */
-    fontColor: function(data) {
-      var self = this;
-
-      if (typeof data !== 'undefined') {
-        self._fontColor = data;
-
-        return self.render();
-      } else {
-        return self._fontColor;
-      }
-    },
-
-    /**
-     * Get/set the place holder font color.
-     * @param  {String} data Font color.
-     * @return {Mixed}      CanvasInput or current place holder font color.
-     */
-    placeHolderColor: function(data) {
-      var self = this;
-
-      if (typeof data !== 'undefined') {
-        self._placeHolderColor = data;
-
-        return self.render();
-      } else {
-        return self._placeHolderColor;
-      }
-    },
-
-    /**
-     * Get/set the font weight.
-     * @param  {String} data Font weight.
-     * @return {Mixed}      CanvasInput or current font weight.
-     */
-    fontWeight: function(data) {
-      var self = this;
-
-      if (typeof data !== 'undefined') {
-        self._fontWeight = data;
-
-        return self.render();
-      } else {
-        return self._fontWeight;
-      }
-    },
-
-    /**
-     * Get/set the font style.
-     * @param  {String} data Font style.
-     * @return {Mixed}      CanvasInput or current font style.
-     */
-    fontStyle: function(data) {
-      var self = this;
-
-      if (typeof data !== 'undefined') {
-        self._fontStyle = data;
-
-        return self.render();
-      } else {
-        return self._fontStyle;
       }
     },
 
@@ -431,57 +306,6 @@
     },
 
     /**
-     * Get/set the border color.
-     * @param  {String} data Border color.
-     * @return {Mixed}      CanvasInput or current border color.
-     */
-    borderColor: function(data) {
-      var self = this;
-
-      if (typeof data !== 'undefined') {
-        self._borderColor = data;
-
-        return self.render();
-      } else {
-        return self._borderColor;
-      }
-    },
-
-    /**
-     * Get/set the border radius.
-     * @param  {Number} data Border radius.
-     * @return {Mixed}      CanvasInput or current border radius.
-     */
-    borderRadius: function(data) {
-      var self = this;
-
-      if (typeof data !== 'undefined') {
-        self._borderRadius = data;
-
-        return self.render();
-      } else {
-        return self._borderRadius;
-      }
-    },
-
-    /**
-     * Get/set the background color.
-     * @param  {Number} data Background color.
-     * @return {Mixed}      CanvasInput or current background color.
-     */
-    backgroundColor: function(data) {
-      var self = this;
-
-      if (typeof data !== 'undefined') {
-        self._backgroundColor = data;
-
-        return self.render();
-      } else {
-        return self._backgroundColor;
-      }
-    },
-
-    /**
      * Get/set the background gradient.
      * @param  {Number} data Background gradient.
      * @return {Mixed}      CanvasInput or current background gradient.
@@ -552,57 +376,6 @@
         }
       } else {
         return self._boxShadow;
-      }
-    },
-
-    /**
-     * Get/set the inner shadow.
-     * @param  {String} data In the format of a CSS box shadow (1px 1px 1px rgba(0, 0, 0.5)).
-     * @return {Mixed}          CanvasInput or current inner shadow.
-     */
-    innerShadow: function(data) {
-      var self = this;
-
-      if (typeof data !== 'undefined') {
-        self._innerShadow = data;
-
-        return self.render();
-      } else {
-        return self._innerShadow;
-      }
-    },
-
-    /**
-     * Get/set the text selection color.
-     * @param  {String} data Color.
-     * @return {Mixed}      CanvasInput or current selection color.
-     */
-    selectionColor: function(data) {
-      var self = this;
-
-      if (typeof data !== 'undefined') {
-        self._selectionColor = data;
-
-        return self.render();
-      } else {
-        return self._selectionColor;
-      }
-    },
-
-    /**
-     * Get/set the place holder text.
-     * @param  {String} data Place holder text.
-     * @return {Mixed}      CanvasInput or current place holder text.
-     */
-    placeHolder: function(data) {
-      var self = this;
-
-      if (typeof data !== 'undefined') {
-        self._placeHolder = data;
-
-        return self.render();
-      } else {
-        return self._placeHolder;
       }
     },
 
