@@ -149,6 +149,8 @@
       // update the canvas input state information from the hidden input
       self._value = self._hiddenInput.value;
       self._cursorPos = self._hiddenInput.selectionStart;
+      // update selection to hidden input's selection in case user did keyboard-based selection
+      self._selection = [self._hiddenInput.selectionStart, self._hiddenInput.selectionEnd];
       self.render();
 
       if (self._hasFocus) {
