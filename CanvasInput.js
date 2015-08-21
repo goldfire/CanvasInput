@@ -26,7 +26,7 @@
     self._y = o.y || 0;
     self._extraX = o.extraX || 0;
     self._extraY = o.extraY || 0;
-    self._fontSize = o.fontSize || 14;
+    self._fontSize = self._defaultFontSize = o.fontSize || 14;
     self._fontFamily = o.fontFamily || 'Arial';
     self._fontColor = o.fontColor || '#000';
     self._placeHolderColor = o.placeHolderColor || '#bfbebd';
@@ -1188,23 +1188,31 @@
       var self = this;
       value = (typeof value === 'undefined') ? self._value : value;
 
-      var textWidth = self._textWidth(value),
-        fillPer = textWidth / (self._width - self._padding),
-        text = fillPer > 1 ? value.substr(-1 * Math.floor(value.length / fillPer)) : value;
+      var textWidth = self._textWidth(value, true),
+        fillPer = textWidth / (self._width - self._padding);
+//        text = fillPer > 1 ? value.substr(-1 * Math.floor(value.length / fillPer)) : value;
+      if (fillPer > 1) {
+        self._fontSize = self._defaultFontSize / fillPer;
+      } else {
+        self._fontSize = self._defaultFontSize;
+      }
 
-      return text + '';
+//      return text + '';
+      return value;
     },
 
     /**
      * Gets the pixel with of passed text.
      * @param  {String} text The text to measure.
+     * @param {Boolean} isDefaultFontSize Whether to measure based on default rather than actual font size
      * @return {Number}      The measured width.
      */
-    _textWidth: function(text) {
+    _textWidth: function(text, isDefaultFontSize) {
       var self = this,
-        ctx = self._renderCtx;
+        ctx = self._renderCtx,
+        fontSize = isDefaultFontSize ? self._defaultFontSize : self._fontSize;
 
-      ctx.font = self._fontStyle + ' ' + self._fontWeight + ' ' + self._fontSize + 'px ' + self._fontFamily;
+      ctx.font = self._fontStyle + ' ' + self._fontWeight + ' ' + fontSize + 'px ' + self._fontFamily;
       ctx.textAlign = 'left';
 
       return ctx.measureText(text).width;
