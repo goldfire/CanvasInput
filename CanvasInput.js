@@ -1001,13 +1001,15 @@
 
       // draw the text box background
       self._drawTextBox(function() {
+        var text = self._value;
+
         // make sure all shadows are reset
         ctx.shadowOffsetX = 0;
         ctx.shadowOffsetY = 0;
         ctx.shadowBlur = 0;
 
         // resize the font so that text fits within the box
-        var text = self._fitText();
+        self._fitText();
 
         // draw the selection
         var paddingBorder = self._padding + self._borderWidth + self.shadowT;
@@ -1178,22 +1180,17 @@
 
     /**
      * Resize the font so the text string fits in the visible text box.
-     * @param  {String} value The text to fit.
-     * @return {String} The passed value.
      */
-    _fitText: function(value) {
+    _fitText: function() {
       var self = this;
-      value = (typeof value === 'undefined') ? self._value : value;
 
-      var textWidth = self._textWidth(value, true),
+      var textWidth = self._textWidth(self._value, true),
         fillPer = textWidth / (self._width - self._padding);
       if (fillPer > 1) {
         self._fontSize = self._defaultFontSize / fillPer;
       } else {
         self._fontSize = self._defaultFontSize;
       }
-
-      return value;
     },
 
     /**
