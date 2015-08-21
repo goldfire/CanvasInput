@@ -969,7 +969,7 @@
     },
 
     /**
-     * Gets the pixel with of passed text.
+     * Gets the pixel width of passed text.
      * @param  {String} text The text to measure.
      * @return {Number}      The measured width.
      */
@@ -984,7 +984,7 @@
     },
 
     /**
-     * Recalculate the outer with and height of the text box.
+     * Recalculate the outer width and height of the text box.
      */
     _calcWH: function() {
       var self = this;
