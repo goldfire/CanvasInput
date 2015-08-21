@@ -19,7 +19,7 @@
 
     o = o ? o : {};
 
-    // setup the defaults
+    // set up the defaults
     self._canvas = o.canvas || null;
     self._ctx = self._canvas ? self._canvas.getContext('2d') : null;
     self._x = o.x || 0;
@@ -63,19 +63,19 @@
     // calculate the full width and height with padding, borders and shadows
     self._calcWH();
 
-    // setup the off-DOM canvas
+    // set up the off-DOM canvas
     self._renderCanvas = document.createElement('canvas');
     self._renderCanvas.setAttribute('width', self.outerW);
     self._renderCanvas.setAttribute('height', self.outerH);
     self._renderCtx = self._renderCanvas.getContext('2d');
 
-    // setup another off-DOM canvas for inner-shadows
+    // set up another off-DOM canvas for inner-shadows
     self._shadowCanvas = document.createElement('canvas');
     self._shadowCanvas.setAttribute('width', self._width + self._padding * 2);
     self._shadowCanvas.setAttribute('height', self._height + self._padding * 2);
     self._shadowCtx = self._shadowCanvas.getContext('2d');
 
-    // setup the background color
+    // set up the background color
     if (typeof o.backgroundGradient !== 'undefined') {
       self._backgroundColor = self._renderCtx.createLinearGradient(
         0,
@@ -89,7 +89,7 @@
       self._backgroundColor = o.backgroundColor || '#fff';
     }
 
-    // setup main canvas events
+    // set up main canvas events
     if (self._canvas) {
       self._canvas.addEventListener('mousemove', function(e) {
         e = e || window.event;
@@ -107,7 +107,7 @@
       }, false);
     }
 
-    // setup a global mouseup to blur the input outside of the canvas
+    // set up a global mouseup to blur the input outside of the canvas
     window.addEventListener('mouseup', function(e) {
       e = e || window.event;
 
@@ -133,7 +133,7 @@
     document.body.appendChild(self._hiddenInput);
     self._hiddenInput.value = self._value;
 
-    // setup the keydown listener
+    // set up the keydown listener
     self._hiddenInput.addEventListener('keydown', function(e) {
       e = e || window.event;
 
@@ -142,7 +142,7 @@
       }
     });
 
-    // setup the keyup listener
+    // set up the keyup listener
     self._hiddenInput.addEventListener('keyup', function(e) {
       e = e || window.event;
 
@@ -164,7 +164,7 @@
     self.render();
   };
 
-  // setup the prototype
+  // set up the prototype
   
   /**
    * Attaches basic getter/setter methods for a given property name to the CanvasInput
@@ -498,7 +498,7 @@
 
       self._cursor = true;
 
-      // setup cursor interval
+      // set up cursor interval
       if (self._cursorInterval) {
         clearInterval(self._cursorInterval);
       }
@@ -676,7 +676,7 @@
         y = mouse.y,
         isOver = self._overInput(x, y);
 
-      // setup the 'click' event
+      // set up the 'click' event
       self._mouseDown = isOver;
 
       // start the selection drag if inside the input
@@ -758,7 +758,7 @@
       // clear the canvas
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
-      // setup the box shadow
+      // set up the box shadow
       ctx.shadowOffsetX = self._boxShadow.x;
       ctx.shadowOffsetY = self._boxShadow.y;
       ctx.shadowBlur = self._boxShadow.blur;
