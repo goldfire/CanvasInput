@@ -490,7 +490,7 @@
       // update the cursor position
       self._cursorPos = (typeof pos === 'number') ? pos : self._clipText().length;
 
-      // clear the place holder
+      // clear the placeholder
       if (self._placeHolder === self._value) {
         self._value = '';
         self._hiddenInput.value = '';
@@ -534,7 +534,7 @@
       self._selection = [0, 0];
       self._hiddenInput.blur();
 
-      // fill the place holder
+      // fill the placeholder
       if (self._value === '') {
         self._value = self._placeHolder;
       }
