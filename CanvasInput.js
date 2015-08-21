@@ -165,51 +165,7 @@
   };
 
   // set up the prototype
-  
-  /**
-   * Attaches basic getter/setter methods for a given property name to the CanvasInput
-   * @param {String}  propName  Name of property for which to create get/set method
-   * @return {Mixed}  CanvasInput or current property value
-   */
-  var createGetterSetter = function(propName) {
-    var self = this;
-    var privatePropName = '_' + propName;
-    
-    self[propName] = function getterSetter(data) {
-      if (typeof data !== 'undefined') {
-        self[privatePropName] = data;
-        
-        return self.render();
-      } else {
-        return self[privatePropName];
-      }
-    };
-  };
-  
-  // properties which use the basic getter/setter method
-  var basicProperties = [
-    'x', // The pixel position along the x-coordinate.
-    'y', // The pixel position along the y-coordinate.
-    'extraX', // The extra x-coordinate position (generally used when no canvas is specified).
-    'extraY', // The extra y-coordinate position (generally used when no canvas is specified).
-    'fontSize',
-    'fontFamily',
-    'fontColor',
-    'placeHolderColor',
-    'fontWeight',
-    'fontStyle',
-    'borderColor',
-    'borderRadius',
-    'backgroundColor',
-    'innerShadow', // In the format of a CSS box shadow (1px 1px 1px rgba(0, 0, 0.5)).
-    'selectionColor',
-    'placeHolder',
-  ];
-  
-  basicProperties.forEach(function() {
-    createGetterSetter.bind(CanvasInput.prototype);
-  });
-
+  // (methods using standard getter/setter will be added dynamically below the prototype object literal)
   CanvasInput.prototype = {
     /**
      * Get/set the main canvas.
@@ -226,82 +182,6 @@
         return self.render();
       } else {
         return self._canvas;
-      }
-    },
-
-    /**
-     * Get/set the width of the text box.
-     * @param  {Number} data Width in pixels.
-     * @return {Mixed}      CanvasInput or current width.
-     */
-    width: function(data) {
-      var self = this;
-
-      if (typeof data !== 'undefined') {
-        self._width = data;
-        self._calcWH();
-        self._updateCanvasWH();
-
-        return self.render();
-      } else {
-        return self._width;
-      }
-    },
-
-    /**
-     * Get/set the height of the text box.
-     * @param  {Number} data Height in pixels.
-     * @return {Mixed}      CanvasInput or current height.
-     */
-    height: function(data) {
-      var self = this;
-
-      if (typeof data !== 'undefined') {
-        self._height = data;
-        self._calcWH();
-        self._updateCanvasWH();
-
-        return self.render();
-      } else {
-        return self._height;
-      }
-    },
-
-    /**
-     * Get/set the padding of the text box.
-     * @param  {Number} data Padding in pixels.
-     * @return {Mixed}      CanvasInput or current padding.
-     */
-    padding: function(data) {
-      var self = this;
-
-      if (typeof data !== 'undefined') {
-        self._padding = data;
-        self._calcWH();
-        self._updateCanvasWH();
-
-        return self.render();
-      } else {
-        return self._padding;
-      }
-    },
-
-    /**
-     * Get/set the border width.
-     * @param  {Number} data Border width.
-     * @return {Mixed}      CanvasInput or current border width.
-     */
-    borderWidth: function(data) {
-      var self = this;
-
-      if (typeof data !== 'undefined') {
-        self._borderWidth = data;
-        self._calcWH();
-        self._updateCanvasWH();
-
-        return self.render();
-      } else {
-        return self._borderWidth;
       }
     },
 
@@ -1130,4 +1010,65 @@
       };
     }
   };
+  
+  /**
+   * Attaches basic getter/setter methods for a given property name to the CanvasInput prototype
+   * @param {String}  propName  Name of property for which to create get/set method
+   * @param {Boolean} isDimension (optional) Whether this property affects the canvas size
+   * @return {Mixed}  CanvasInput or current property value
+   */
+  function createGetterSetter(propName, isDimension) {
+    var privatePropName = '_' + propName;
+
+    CanvasInput.prototype[propName] = function getterSetter(data) {
+      var self = this;
+
+      if (typeof data !== 'undefined') {
+        self[privatePropName] = data;
+
+        if (isDimension) {
+          self._calcWH();
+          self._updateCanvasWH();
+        }
+
+        return self.render();
+      } else {
+        return self[privatePropName];
+      }
+    };
+  };
+
+  // properties which use the standard getter/setter method
+  var standardProperties = [
+    'x', // The pixel position along the x-coordinate.
+    'y', // The pixel position along the y-coordinate.
+    'extraX', // The extra x-coordinate position (generally used when no canvas is specified).
+    'extraY', // The extra y-coordinate position (generally used when no canvas is specified).
+    'fontSize',
+    'fontFamily',
+    'fontColor',
+    'placeHolderColor',
+    'fontWeight',
+    'fontStyle',
+    'borderColor',
+    'borderRadius',
+    'backgroundColor',
+    'innerShadow', // In the format of a CSS box shadow (1px 1px 1px rgba(0, 0, 0.5)).
+    'selectionColor',
+    'placeHolder',
+  ];
+
+  standardProperties.forEach(createGetterSetter);
+
+  // properties which use the standard getter/setter method and affect the canvas dimensions
+  var standardDimensionProperties = [
+    'width',
+    'height',
+    'padding',
+    'borderWidth',
+  ];
+
+  standardDimensionProperties.forEach(function(property) {
+    createGetterSetter(property, true);
+  });
 })();
