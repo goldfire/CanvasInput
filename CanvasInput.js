@@ -1,5 +1,5 @@
 /*!
- *  CanvasInput v1.2.0
+ *  CanvasInput v1.2.2
  *  http://goldfirestudios.com/blog/108/CanvasInput-HTML5-Canvas-Text-Input
  *
  *  (c) 2013-2015, James Simpson of GoldFire Studios
@@ -19,7 +19,7 @@
 
     o = o ? o : {};
 
-    // setup the defaults
+    // set up the defaults
     self._canvas = o.canvas || null;
     self._ctx = self._canvas ? self._canvas.getContext('2d') : null;
     self._x = o.x || 0;
@@ -63,19 +63,19 @@
     // calculate the full width and height with padding, borders and shadows
     self._calcWH();
 
-    // setup the off-DOM canvas
+    // set up the off-DOM canvas
     self._renderCanvas = document.createElement('canvas');
     self._renderCanvas.setAttribute('width', self.outerW);
     self._renderCanvas.setAttribute('height', self.outerH);
     self._renderCtx = self._renderCanvas.getContext('2d');
 
-    // setup another off-DOM canvas for inner-shadows
+    // set up another off-DOM canvas for inner-shadows
     self._shadowCanvas = document.createElement('canvas');
     self._shadowCanvas.setAttribute('width', self._width + self._padding * 2);
     self._shadowCanvas.setAttribute('height', self._height + self._padding * 2);
     self._shadowCtx = self._shadowCanvas.getContext('2d');
 
-    // setup the background color
+    // set up the background color
     if (typeof o.backgroundGradient !== 'undefined') {
       self._backgroundColor = self._renderCtx.createLinearGradient(
         0,
@@ -89,7 +89,7 @@
       self._backgroundColor = o.backgroundColor || '#fff';
     }
 
-    // setup main canvas events
+    // set up main canvas events
     if (self._canvas) {
       self._canvas.addEventListener('mousemove', function(e) {
         e = e || window.event;
@@ -107,7 +107,7 @@
       }, false);
     }
 
-    // setup a global mouseup to blur the input outside of the canvas
+    // set up a global mouseup to blur the input outside of the canvas
     window.addEventListener('mouseup', function(e) {
       e = e || window.event;
 
@@ -133,7 +133,7 @@
     document.body.appendChild(self._hiddenInput);
     self._hiddenInput.value = self._value;
 
-    // setup the keydown listener
+    // set up the keydown listener
     self._hiddenInput.addEventListener('keydown', function(e) {
       e = e || window.event;
 
@@ -142,7 +142,7 @@
       }
     });
 
-    // setup the keyup listener
+    // set up the keyup listener
     self._hiddenInput.addEventListener('keyup', function(e) {
       e = e || window.event;
 
@@ -164,7 +164,8 @@
     self.render();
   };
 
-  // setup the prototype
+  // set up the prototype
+  // (methods using standard getter/setter will be added dynamically below the prototype object literal)
   CanvasInput.prototype = {
     /**
      * Get/set the main canvas.
@@ -181,303 +182,6 @@
         return self.render();
       } else {
         return self._canvas;
-      }
-    },
-
-    /**
-     * Get/set the x-position.
-     * @param  {Number} data The pixel position along the x-coordinate.
-     * @return {Mixed}      CanvasInput or current x-value.
-     */
-    x: function(data) {
-      var self = this;
-
-      if (typeof data !== 'undefined') {
-        self._x = data;
-
-        return self.render();
-      } else {
-        return self._x;
-      }
-    },
-
-    /**
-     * Get/set the y-position.
-     * @param  {Number} data The pixel position along the y-coordinate.
-     * @return {Mixed}      CanvasInput or current y-value.
-     */
-    y: function(data) {
-      var self = this;
-
-      if (typeof data !== 'undefined') {
-        self._y = data;
-
-        return self.render();
-      } else {
-        return self._y;
-      }
-    },
-
-    /**
-     * Get/set the extra x-position (generally used when no canvas is specified).
-     * @param  {Number} data The pixel position along the x-coordinate.
-     * @return {Mixed}      CanvasInput or current x-value.
-     */
-    extraX: function(data) {
-      var self = this;
-
-      if (typeof data !== 'undefined') {
-        self._extraX = data;
-
-        return self.render();
-      } else {
-        return self._extraX;
-      }
-    },
-
-    /**
-     * Get/set the extra y-position (generally used when no canvas is specified).
-     * @param  {Number} data The pixel position along the y-coordinate.
-     * @return {Mixed}      CanvasInput or current y-value.
-     */
-    extraY: function(data) {
-      var self = this;
-
-      if (typeof data !== 'undefined') {
-        self._extraY = data;
-
-        return self.render();
-      } else {
-        return self._extraY;
-      }
-    },
-
-    /**
-     * Get/set the font size.
-     * @param  {Number} data Font size.
-     * @return {Mixed}      CanvasInput or current font size.
-     */
-    fontSize: function(data) {
-      var self = this;
-
-      if (typeof data !== 'undefined') {
-        self._fontSize = data;
-
-        return self.render();
-      } else {
-        return self._fontSize;
-      }
-    },
-
-    /**
-     * Get/set the font family.
-     * @param  {String} data Font family.
-     * @return {Mixed}      CanvasInput or current font family.
-     */
-    fontFamily: function(data) {
-      var self = this;
-
-      if (typeof data !== 'undefined') {
-        self._fontFamily = data;
-
-        return self.render();
-      } else {
-        return self._fontFamily;
-      }
-    },
-
-    /**
-     * Get/set the font color.
-     * @param  {String} data Font color.
-     * @return {Mixed}      CanvasInput or current font color.
-     */
-    fontColor: function(data) {
-      var self = this;
-
-      if (typeof data !== 'undefined') {
-        self._fontColor = data;
-
-        return self.render();
-      } else {
-        return self._fontColor;
-      }
-    },
-
-    /**
-     * Get/set the place holder font color.
-     * @param  {String} data Font color.
-     * @return {Mixed}      CanvasInput or current place holder font color.
-     */
-    placeHolderColor: function(data) {
-      var self = this;
-
-      if (typeof data !== 'undefined') {
-        self._placeHolderColor = data;
-
-        return self.render();
-      } else {
-        return self._placeHolderColor;
-      }
-    },
-
-    /**
-     * Get/set the font weight.
-     * @param  {String} data Font weight.
-     * @return {Mixed}      CanvasInput or current font weight.
-     */
-    fontWeight: function(data) {
-      var self = this;
-
-      if (typeof data !== 'undefined') {
-        self._fontWeight = data;
-
-        return self.render();
-      } else {
-        return self._fontWeight;
-      }
-    },
-
-    /**
-     * Get/set the font style.
-     * @param  {String} data Font style.
-     * @return {Mixed}      CanvasInput or current font style.
-     */
-    fontStyle: function(data) {
-      var self = this;
-
-      if (typeof data !== 'undefined') {
-        self._fontStyle = data;
-
-        return self.render();
-      } else {
-        return self._fontStyle;
-      }
-    },
-
-    /**
-     * Get/set the width of the text box.
-     * @param  {Number} data Width in pixels.
-     * @return {Mixed}      CanvasInput or current width.
-     */
-    width: function(data) {
-      var self = this;
-
-      if (typeof data !== 'undefined') {
-        self._width = data;
-        self._calcWH();
-        self._updateCanvasWH();
-
-        return self.render();
-      } else {
-        return self._width;
-      }
-    },
-
-    /**
-     * Get/set the height of the text box.
-     * @param  {Number} data Height in pixels.
-     * @return {Mixed}      CanvasInput or current height.
-     */
-    height: function(data) {
-      var self = this;
-
-      if (typeof data !== 'undefined') {
-        self._height = data;
-        self._calcWH();
-        self._updateCanvasWH();
-
-        return self.render();
-      } else {
-        return self._height;
-      }
-    },
-
-    /**
-     * Get/set the padding of the text box.
-     * @param  {Number} data Padding in pixels.
-     * @return {Mixed}      CanvasInput or current padding.
-     */
-    padding: function(data) {
-      var self = this;
-
-      if (typeof data !== 'undefined') {
-        self._padding = data;
-        self._calcWH();
-        self._updateCanvasWH();
-
-        return self.render();
-      } else {
-        return self._padding;
-      }
-    },
-
-    /**
-     * Get/set the border width.
-     * @param  {Number} data Border width.
-     * @return {Mixed}      CanvasInput or current border width.
-     */
-    borderWidth: function(data) {
-      var self = this;
-
-      if (typeof data !== 'undefined') {
-        self._borderWidth = data;
-        self._calcWH();
-        self._updateCanvasWH();
-
-        return self.render();
-      } else {
-        return self._borderWidth;
-      }
-    },
-
-    /**
-     * Get/set the border color.
-     * @param  {String} data Border color.
-     * @return {Mixed}      CanvasInput or current border color.
-     */
-    borderColor: function(data) {
-      var self = this;
-
-      if (typeof data !== 'undefined') {
-        self._borderColor = data;
-
-        return self.render();
-      } else {
-        return self._borderColor;
-      }
-    },
-
-    /**
-     * Get/set the border radius.
-     * @param  {Number} data Border radius.
-     * @return {Mixed}      CanvasInput or current border radius.
-     */
-    borderRadius: function(data) {
-      var self = this;
-
-      if (typeof data !== 'undefined') {
-        self._borderRadius = data;
-
-        return self.render();
-      } else {
-        return self._borderRadius;
-      }
-    },
-
-    /**
-     * Get/set the background color.
-     * @param  {Number} data Background color.
-     * @return {Mixed}      CanvasInput or current background color.
-     */
-    backgroundColor: function(data) {
-      var self = this;
-
-      if (typeof data !== 'undefined') {
-        self._backgroundColor = data;
-
-        return self.render();
-      } else {
-        return self._backgroundColor;
       }
     },
 
@@ -552,57 +256,6 @@
         }
       } else {
         return self._boxShadow;
-      }
-    },
-
-    /**
-     * Get/set the inner shadow.
-     * @param  {String} data In the format of a CSS box shadow (1px 1px 1px rgba(0, 0, 0.5)).
-     * @return {Mixed}          CanvasInput or current inner shadow.
-     */
-    innerShadow: function(data) {
-      var self = this;
-
-      if (typeof data !== 'undefined') {
-        self._innerShadow = data;
-
-        return self.render();
-      } else {
-        return self._innerShadow;
-      }
-    },
-
-    /**
-     * Get/set the text selection color.
-     * @param  {String} data Color.
-     * @return {Mixed}      CanvasInput or current selection color.
-     */
-    selectionColor: function(data) {
-      var self = this;
-
-      if (typeof data !== 'undefined') {
-        self._selectionColor = data;
-
-        return self.render();
-      } else {
-        return self._selectionColor;
-      }
-    },
-
-    /**
-     * Get/set the place holder text.
-     * @param  {String} data Place holder text.
-     * @return {Mixed}      CanvasInput or current place holder text.
-     */
-    placeHolder: function(data) {
-      var self = this;
-
-      if (typeof data !== 'undefined') {
-        self._placeHolder = data;
-
-        return self.render();
-      } else {
-        return self._placeHolder;
       }
     },
 
@@ -717,7 +370,7 @@
       // update the cursor position
       self._cursorPos = (typeof pos === 'number') ? pos : self._clipText().length;
 
-      // clear the place holder
+      // clear the placeholder
       if (self._placeHolder === self._value) {
         self._value = '';
         self._hiddenInput.value = '';
@@ -725,7 +378,7 @@
 
       self._cursor = true;
 
-      // setup cursor interval
+      // set up cursor interval
       if (self._cursorInterval) {
         clearInterval(self._cursorInterval);
       }
@@ -761,7 +414,7 @@
       self._selection = [0, 0];
       self._hiddenInput.blur();
 
-      // fill the place holder
+      // fill the placeholder
       if (self._value === '') {
         self._value = self._placeHolder;
       }
@@ -903,7 +556,7 @@
         y = mouse.y,
         isOver = self._overInput(x, y);
 
-      // setup the 'click' event
+      // set up the 'click' event
       self._mouseDown = isOver;
 
       // start the selection drag if inside the input
@@ -985,7 +638,7 @@
       // clear the canvas
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
-      // setup the box shadow
+      // set up the box shadow
       ctx.shadowOffsetX = self._boxShadow.x;
       ctx.shadowOffsetY = self._boxShadow.y;
       ctx.shadowBlur = self._boxShadow.blur;
@@ -1196,7 +849,7 @@
     },
 
     /**
-     * Gets the pixel with of passed text.
+     * Gets the pixel width of passed text.
      * @param  {String} text The text to measure.
      * @return {Number}      The measured width.
      */
@@ -1211,7 +864,7 @@
     },
 
     /**
-     * Recalculate the outer with and height of the text box.
+     * Recalculate the outer width and height of the text box.
      */
     _calcWH: function() {
       var self = this;
@@ -1357,4 +1010,65 @@
       };
     }
   };
+  
+  /**
+   * Attaches basic getter/setter methods for a given property name to the CanvasInput prototype
+   * @param {String}  propName  Name of property for which to create get/set method
+   * @param {Boolean} isDimension (optional) Whether this property affects the canvas size
+   * @return {Mixed}  CanvasInput or current property value
+   */
+  function createGetterSetter(propName, isDimension) {
+    var privatePropName = '_' + propName;
+
+    CanvasInput.prototype[propName] = function getterSetter(data) {
+      var self = this;
+
+      if (typeof data !== 'undefined') {
+        self[privatePropName] = data;
+
+        if (isDimension) {
+          self._calcWH();
+          self._updateCanvasWH();
+        }
+
+        return self.render();
+      } else {
+        return self[privatePropName];
+      }
+    };
+  };
+
+  // properties which use the standard getter/setter method
+  var standardProperties = [
+    'x', // The pixel position along the x-coordinate.
+    'y', // The pixel position along the y-coordinate.
+    'extraX', // The extra x-coordinate position (generally used when no canvas is specified).
+    'extraY', // The extra y-coordinate position (generally used when no canvas is specified).
+    'fontSize',
+    'fontFamily',
+    'fontColor',
+    'placeHolderColor',
+    'fontWeight',
+    'fontStyle',
+    'borderColor',
+    'borderRadius',
+    'backgroundColor',
+    'innerShadow', // In the format of a CSS box shadow (1px 1px 1px rgba(0, 0, 0.5)).
+    'selectionColor',
+    'placeHolder',
+  ];
+
+  standardProperties.forEach(createGetterSetter);
+
+  // properties which use the standard getter/setter method and affect the canvas dimensions
+  var standardDimensionProperties = [
+    'width',
+    'height',
+    'padding',
+    'borderWidth',
+  ];
+
+  standardDimensionProperties.forEach(function(property) {
+    createGetterSetter(property, true);
+  });
 })();
