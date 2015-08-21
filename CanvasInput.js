@@ -1196,13 +1196,13 @@
     /**
      * Gets the pixel with of passed text.
      * @param  {String} text The text to measure.
-     * @param {Boolean} isDefaultFontSize Whether to measure based on default rather than actual font size
+     * @param {Boolean} useDefaultFontSize Whether to measure based on default rather than actual font size
      * @return {Number}      The measured width.
      */
-    _textWidth: function(text, isDefaultFontSize) {
+    _textWidth: function(text, useDefaultFontSize) {
       var self = this,
         ctx = self._renderCtx,
-        fontSize = isDefaultFontSize ? self._defaultFontSize : self._fontSize;
+        fontSize = useDefaultFontSize ? self._defaultFontSize : self._fontSize;
 
       ctx.font = self._fontStyle + ' ' + self._fontWeight + ' ' + fontSize + 'px ' + self._fontFamily;
       ctx.textAlign = 'left';
