@@ -618,9 +618,6 @@
         self._value = data + '';
         self._hiddenInput.value = data + '';
 
-        // update the cursor position
-        self._cursorPos = self._fitText().length;
-
         self.render();
 
         return self;
@@ -715,7 +712,7 @@
       }
 
       // update the cursor position
-      self._cursorPos = (typeof pos === 'number') ? pos : self._fitText().length;
+      self._cursorPos = (typeof pos === 'number') ? pos : self._value.length;
 
       // clear the place holder
       if (self._placeHolder === self._value) {
@@ -1009,7 +1006,7 @@
         ctx.shadowOffsetY = 0;
         ctx.shadowBlur = 0;
 
-        // clip the text so that it fits within the box
+        // resize the font so that text fits within the box
         var text = self._fitText();
 
         // draw the selection
@@ -1309,7 +1306,7 @@
       }
 
       // determine where the click was made along the string
-      var text = self._fitText(value),
+      var text = self._value,
         totalW = 0,
         pos = text.length;
 
