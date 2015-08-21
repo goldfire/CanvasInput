@@ -619,7 +619,7 @@
         self._hiddenInput.value = data + '';
 
         // update the cursor position
-        self._cursorPos = self._clipText().length;
+        self._cursorPos = self._fitText().length;
 
         self.render();
 
@@ -715,7 +715,7 @@
       }
 
       // update the cursor position
-      self._cursorPos = (typeof pos === 'number') ? pos : self._clipText().length;
+      self._cursorPos = (typeof pos === 'number') ? pos : self._fitText().length;
 
       // clear the place holder
       if (self._placeHolder === self._value) {
@@ -1010,7 +1010,7 @@
         ctx.shadowBlur = 0;
 
         // clip the text so that it fits within the box
-        var text = self._clipText();
+        var text = self._fitText();
 
         // draw the selection
         var paddingBorder = self._padding + self._borderWidth + self.shadowT;
@@ -1180,24 +1180,22 @@
     },
 
     /**
-     * Clip the text string to only return what fits in the visible text box.
-     * @param  {String} value The text to clip.
-     * @return {String} The clipped text.
+     * Resize the font so the text string fits in the visible text box.
+     * @param  {String} value The text to fit.
+     * @return {String} The passed value.
      */
-    _clipText: function(value) {
+    _fitText: function(value) {
       var self = this;
       value = (typeof value === 'undefined') ? self._value : value;
 
       var textWidth = self._textWidth(value, true),
         fillPer = textWidth / (self._width - self._padding);
-//        text = fillPer > 1 ? value.substr(-1 * Math.floor(value.length / fillPer)) : value;
       if (fillPer > 1) {
         self._fontSize = self._defaultFontSize / fillPer;
       } else {
         self._fontSize = self._defaultFontSize;
       }
 
-//      return text + '';
       return value;
     },
 
@@ -1311,7 +1309,7 @@
       }
 
       // determine where the click was made along the string
-      var text = self._clipText(value),
+      var text = self._fitText(value),
         totalW = 0,
         pos = text.length;
 
