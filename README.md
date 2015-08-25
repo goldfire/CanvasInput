@@ -43,7 +43,7 @@ var input = new CanvasInput({
 
 ##### More styling options:
 ```html
-<canvas id="canvas" width="200" height="50"></canvas>
+<canvas id="canvas" width="350" height="50"></canvas>
 ```
 ```javascript
 var input = new CanvasInput({
@@ -105,9 +105,12 @@ In addition to getter/setter methods for each of the above properties, the follo
 * **blur**: Removes the focus from the text input box.
 * **renderCanvas**: Returns the off-DOM canvas, allowing you to draw its contents to whatever canvas you would like (or do whatever else with the data that you want). 
 * **render**: This rerenders the full input box.
+* **selectText**: Select part or all of the text in the input box programmatically.
+  * *range*: `Array` (optional) Leave empty to select all text, or pass range values in this form: `[start, end]`.
+* **destroy**: Destroy the input and stop rendering it.
 
 ## License
 
-Copyright (c) 2013 James Simpson and GoldFire Studios, Inc.
+Copyright (c) 2013-2015 James Simpson and GoldFire Studios, Inc.
 
 Released under the MIT License.
