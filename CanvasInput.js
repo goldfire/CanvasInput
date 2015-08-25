@@ -26,7 +26,7 @@
     self._y = o.y || 0;
     self._extraX = o.extraX || 0;
     self._extraY = o.extraY || 0;
-    self._fontSize = o.fontSize || 14;
+    self._fontSize = self._defaultFontSize = o.fontSize || 14;
     self._fontFamily = o.fontFamily || 'Arial';
     self._fontColor = o.fontColor || '#000';
     self._placeHolderColor = o.placeHolderColor || '#bfbebd';
@@ -618,9 +618,6 @@
         self._value = data + '';
         self._hiddenInput.value = data + '';
 
-        // update the cursor position
-        self._cursorPos = self._clipText().length;
-
         self.render();
 
         return self;
@@ -715,7 +712,7 @@
       }
 
       // update the cursor position
-      self._cursorPos = (typeof pos === 'number') ? pos : self._clipText().length;
+      self._cursorPos = (typeof pos === 'number') ? pos : self._value.length;
 
       // clear the place holder
       if (self._placeHolder === self._value) {
@@ -1004,13 +1001,15 @@
 
       // draw the text box background
       self._drawTextBox(function() {
+        var text = self._value;
+
         // make sure all shadows are reset
         ctx.shadowOffsetX = 0;
         ctx.shadowOffsetY = 0;
         ctx.shadowBlur = 0;
 
-        // clip the text so that it fits within the box
-        var text = self._clipText();
+        // resize the font so that text fits within the box
+        self._fitText();
 
         // draw the selection
         var paddingBorder = self._padding + self._borderWidth + self.shadowT;
@@ -1180,31 +1179,32 @@
     },
 
     /**
-     * Clip the text string to only return what fits in the visible text box.
-     * @param  {String} value The text to clip.
-     * @return {String} The clipped text.
+     * Resize the font so the text string fits in the visible text box.
      */
-    _clipText: function(value) {
+    _fitText: function() {
       var self = this;
-      value = (typeof value === 'undefined') ? self._value : value;
 
-      var textWidth = self._textWidth(value),
-        fillPer = textWidth / (self._width - self._padding),
-        text = fillPer > 1 ? value.substr(-1 * Math.floor(value.length / fillPer)) : value;
-
-      return text + '';
+      var textWidth = self._textWidth(self._value, true),
+        fillPer = textWidth / (self._width - self._padding);
+      if (fillPer > 1) {
+        self._fontSize = self._defaultFontSize / fillPer;
+      } else {
+        self._fontSize = self._defaultFontSize;
+      }
     },
 
     /**
      * Gets the pixel with of passed text.
      * @param  {String} text The text to measure.
+     * @param {Boolean} useDefaultFontSize Whether to measure based on default rather than actual font size
      * @return {Number}      The measured width.
      */
-    _textWidth: function(text) {
+    _textWidth: function(text, useDefaultFontSize) {
       var self = this,
-        ctx = self._renderCtx;
+        ctx = self._renderCtx,
+        fontSize = useDefaultFontSize ? self._defaultFontSize : self._fontSize;
 
-      ctx.font = self._fontStyle + ' ' + self._fontWeight + ' ' + self._fontSize + 'px ' + self._fontFamily;
+      ctx.font = self._fontStyle + ' ' + self._fontWeight + ' ' + fontSize + 'px ' + self._fontFamily;
       ctx.textAlign = 'left';
 
       return ctx.measureText(text).width;
@@ -1303,7 +1303,7 @@
       }
 
       // determine where the click was made along the string
-      var text = self._clipText(value),
+      var text = self._value,
         totalW = 0,
         pos = text.length;
 
