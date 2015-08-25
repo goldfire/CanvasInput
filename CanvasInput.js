@@ -1,5 +1,5 @@
 /*!
- *  CanvasInput v1.2.0
+ *  CanvasInput v1.2.1
  *  http://goldfirestudios.com/blog/108/CanvasInput-HTML5-Canvas-Text-Input
  *
  *  (c) 2013-2015, James Simpson of GoldFire Studios
@@ -149,6 +149,8 @@
       // update the canvas input state information from the hidden input
       self._value = self._hiddenInput.value;
       self._cursorPos = self._hiddenInput.selectionStart;
+      // update selection to hidden input's selection in case user did keyboard-based selection
+      self._selection = [self._hiddenInput.selectionStart, self._hiddenInput.selectionEnd];
       self.render();
 
       if (self._hasFocus) {
