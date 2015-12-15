@@ -1,5 +1,5 @@
 /*!
- *  CanvasInput v1.2.1
+ *  CanvasInput v1.2.2
  *  http://goldfirestudios.com/blog/108/CanvasInput-HTML5-Canvas-Text-Input
  *
  *  (c) 2013-2015, James Simpson of GoldFire Studios
@@ -32,6 +32,10 @@
     self._placeHolderColor = o.placeHolderColor || '#bfbebd';
     self._fontWeight = o.fontWeight || 'normal';
     self._fontStyle = o.fontStyle || 'normal';
+    self._fontShadowColor = o.fontShadowColor || '';
+    self._fontShadowBlur = o.fontShadowBlur || 0;
+    self._fontShadowOffsetX = o.fontShadowOffsetX || 0;
+    self._fontShadowOffsetY = o.fontShadowOffsetY || 0;
     self._readonly = o.readonly || false;
     self._maxlength = o.maxlength || null;
     self._width = o.width || 150;
@@ -353,6 +357,74 @@
         return self.render();
       } else {
         return self._fontStyle;
+      }
+    },
+
+    /**
+     * Get/set the font shadow color.
+     * @param  {String} data Font shadow color.
+     * @return {Mixed}      CanvasInput or current font shadow color.
+     */
+    fontShadowColor: function(data) {
+      var self = this;
+
+      if (typeof data !== 'undefined') {
+        self._fontShadowColor = data;
+
+        return self.render();
+      } else {
+        return self._fontShadowColor;
+      }
+    },
+
+    /**
+     * Get/set the font shadow blur.
+     * @param  {String} data Font shadow blur.
+     * @return {Mixed}      CanvasInput or current font shadow blur.
+     */
+    fontShadowBlur: function(data) {
+      var self = this;
+
+      if (typeof data !== 'undefined') {
+        self._fontShadowBlur = data;
+
+        return self.render();
+      } else {
+        return self._fontShadowBlur;
+      }
+    },
+
+    /**
+     * Get/set the font shadow x-offset.
+     * @param  {String} data Font shadow x-offset.
+     * @return {Mixed}      CanvasInput or current font shadow x-offset.
+     */
+    fontShadowOffsetX: function(data) {
+      var self = this;
+
+      if (typeof data !== 'undefined') {
+        self._fontShadowOffsetX = data;
+
+        return self.render();
+      } else {
+        return self._fontShadowOffsetX;
+      }
+    },
+
+    /**
+     * Get/set the font shadow y-offset.
+     * @param  {String} data Font shadow y-offset.
+     * @return {Mixed}      CanvasInput or current font shadow y-offset.
+     */
+    fontShadowOffsetY: function(data) {
+      var self = this;
+
+      if (typeof data !== 'undefined') {
+        self._fontShadowOffsetY = data;
+
+        return self.render();
+      } else {
+        return self._fontShadowOffsetY;
       }
     },
 
@@ -1040,6 +1112,10 @@
 
         ctx.fillStyle = (self._value !== '' && self._value !== self._placeHolder) ? self._fontColor : self._placeHolderColor;
         ctx.font = self._fontStyle + ' ' + self._fontWeight + ' ' + self._fontSize + 'px ' + self._fontFamily;
+        ctx.shadowColor = self._fontShadowColor;
+        ctx.shadowBlur = self._fontShadowBlur;
+        ctx.shadowOffsetX = self._fontShadowOffsetX;
+        ctx.shadowOffsetY = self._fontShadowOffsetY;
         ctx.textAlign = 'left';
         ctx.textBaseline = 'middle';
         ctx.fillText(text, textX, textY);

@@ -75,6 +75,10 @@ var input = new CanvasInput({
 * **placeHolderColor**: `String` *(`#bfbebd` by default)* Place holder text color.
 * **fontWeight**: `String` *(`normal` by default)* Font weight such as `bold` or `normal`.
 * **fontStyle**: `String` *(`normal` by default)* Font style such as `italic` or `normal`.
+* **fontShadowColor**: `String` *(`''` by default)* Shadow color for both placeholder and value text.
+* **fontShadowBlur**: `String` *(`0` by default)* Shadow blur for both placeholder and value text.
+* **fontShadowOffsetX**: `String` *(`0` by default)* Shadow x-offset for both placeholder and value text.
+* **fontShadowOffsetY**: `String` *(`0` by default)* Shadow y-offset for both placeholder and value text.
 * **readonly**: `Boolean` *(`false` by default)* Set to `true` to disable user input.
 * **maxlength**: `Number` *(`null` by default)* Sets the max length of characters.
 * **width**: `Number` *(`150` by default)* The width of the text box (just like in the DOM, padding, borders and shadows add onto this width).
