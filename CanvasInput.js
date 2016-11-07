@@ -1,8 +1,8 @@
 /*!
- *  CanvasInput v1.2.2
+ *  CanvasInput v1.2.3
  *  http://goldfirestudios.com/blog/108/CanvasInput-HTML5-Canvas-Text-Input
  *
- *  (c) 2013-2015, James Simpson of GoldFire Studios
+ *  (c) 2013-2016, James Simpson of GoldFire Studios
  *  goldfirestudios.com
  *
  *  MIT License
@@ -783,30 +783,29 @@
       self._hasFocus = true;
       if (self._readonly) {
         self._hiddenInput.readOnly = true;
-        return;
       } else {
         self._hiddenInput.readOnly = false;
+
+        // update the cursor position
+        self._cursorPos = (typeof pos === 'number') ? pos : self._clipText().length;
+
+        // clear the place holder
+        if (self._placeHolder === self._value) {
+          self._value = '';
+          self._hiddenInput.value = '';
+        }
+
+        self._cursor = true;
+
+        // setup cursor interval
+        if (self._cursorInterval) {
+          clearInterval(self._cursorInterval);
+        }
+        self._cursorInterval = setInterval(function() {
+          self._cursor = !self._cursor;
+          self.render();
+        }, 500);
       }
-
-      // update the cursor position
-      self._cursorPos = (typeof pos === 'number') ? pos : self._clipText().length;
-
-      // clear the place holder
-      if (self._placeHolder === self._value) {
-        self._value = '';
-        self._hiddenInput.value = '';
-      }
-
-      self._cursor = true;
-
-      // setup cursor interval
-      if (self._cursorInterval) {
-        clearInterval(self._cursorInterval);
-      }
-      self._cursorInterval = setInterval(function() {
-        self._cursor = !self._cursor;
-        self.render();
-      }, 500);
 
       // move the real focus to the hidden input
       var hasSelection = (self._selection[0] > 0 || self._selection[1] > 0);

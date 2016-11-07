@@ -115,6 +115,6 @@ In addition to getter/setter methods for each of the above properties, the follo
 
 ## License
 
-Copyright (c) 2013-2015 James Simpson and GoldFire Studios, Inc.
+Copyright (c) 2013-2016 James Simpson and GoldFire Studios, Inc.
 
 Released under the MIT License.
