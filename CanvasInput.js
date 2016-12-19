@@ -112,14 +112,16 @@
     }
 
     // setup a global mouseup to blur the input outside of the canvas
-    window.addEventListener('mouseup', function(e) {
+    var autoBlur = function(e) {
       e = e || window.event;
 
       if (self._hasFocus && !self._mouseDown) {
         self.blur();
       }
-    }, true);
-    
+    };
+    window.addEventListener('mouseup', autoBlur, true);
+    window.addEventListener('touchend', autoBlur, true);
+
     // create the hidden input element
     self._hiddenInput = document.createElement('input');
     self._hiddenInput.type = 'text';
@@ -1405,7 +1407,21 @@
      */
     _mousePos: function(e) {
       var elm = e.target,
-        style = document.defaultView.getComputedStyle(elm, undefined),
+        x = e.pageX,
+        y = e.pageY;
+
+      // support touch events in page location calculation
+      if (e.touches && e.touches.length) {
+        elm = e.touches[0].target;
+        x = e.touches[0].pageX;
+        y = e.touches[0].pageY;
+      } else if (e.changedTouches && e.changedTouches.length) {
+        elm = e.changedTouches[0].target;
+        x = e.changedTouches[0].pageX;
+        y = e.changedTouches[0].pageY;
+      }
+
+      var style = document.defaultView.getComputedStyle(elm, undefined),
         paddingLeft = parseInt(style['paddingLeft'], 10) || 0,
         paddingTop = parseInt(style['paddingLeft'], 10) || 0,
         borderLeft = parseInt(style['borderLeftWidth'], 10) || 0,
@@ -1413,8 +1429,7 @@
         htmlTop = document.body.parentNode.offsetTop || 0,
         htmlLeft = document.body.parentNode.offsetLeft || 0,
         offsetX = 0,
-        offsetY = 0,
-        x, y;
+        offsetY = 0;
 
       // calculate the total offset
       if (typeof elm.offsetParent !== 'undefined') {
@@ -1429,8 +1444,8 @@
       offsetY += paddingTop + borderTop + htmlTop;
 
       return {
-        x: e.pageX - offsetX,
-        y: e.pageY - offsetY
+        x: x - offsetX,
+        y: y - offsetY
       };
     }
   };
