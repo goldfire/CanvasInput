@@ -1,5 +1,5 @@
 /*!
- *  CanvasInput v1.2.4
+ *  CanvasInput v1.2.5
  *  http://goldfirestudios.com/blog/108/CanvasInput-HTML5-Canvas-Text-Input
  *
  *  (c) 2013-2017, James Simpson of GoldFire Studios
@@ -144,6 +144,11 @@
       e = e || window.event;
 
       if (self._hasFocus) {
+        // hack to fix touch event bug in iOS Safari
+        window.focus();
+        self._hiddenInput.focus();
+
+        // continue with the keydown event
         self.keydown(e, self);
       }
     });
