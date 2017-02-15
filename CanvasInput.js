@@ -1,5 +1,5 @@
 /*!
- *  CanvasInput v1.2.5
+ *  CanvasInput v1.2.6
  *  http://goldfirestudios.com/blog/108/CanvasInput-HTML5-Canvas-Text-Input
  *
  *  (c) 2013-2017, James Simpson of GoldFire Studios
@@ -128,11 +128,8 @@
     self._hiddenInput.style.position = 'absolute';
     self._hiddenInput.style.opacity = 0;
     self._hiddenInput.style.pointerEvents = 'none';
-    self._hiddenInput.style.left = (self._x + self._extraX + (self._canvas ? self._canvas.offsetLeft : 0)) + 'px';
-    self._hiddenInput.style.top = (self._y + self._extraY + (self._canvas ? self._canvas.offsetTop : 0)) + 'px';
-    self._hiddenInput.style.width = self._width + 'px';
-    self._hiddenInput.style.height = self._height + 'px';
     self._hiddenInput.style.zIndex = 0;
+    self._updateHiddenInput();
     if (self._maxlength) {
       self._hiddenInput.maxLength = self._maxlength;
     }
@@ -207,6 +204,7 @@
 
       if (typeof data !== 'undefined') {
         self._x = data;
+        self._updateHiddenInput();
 
         return self.render();
       } else {
@@ -224,6 +222,7 @@
 
       if (typeof data !== 'undefined') {
         self._y = data;
+        self._updateHiddenInput();
 
         return self.render();
       } else {
@@ -241,6 +240,7 @@
 
       if (typeof data !== 'undefined') {
         self._extraX = data;
+        self._updateHiddenInput();
 
         return self.render();
       } else {
@@ -258,6 +258,7 @@
 
       if (typeof data !== 'undefined') {
         self._extraY = data;
+        self._updateHiddenInput();
 
         return self.render();
       } else {
@@ -447,6 +448,7 @@
         self._width = data;
         self._calcWH();
         self._updateCanvasWH();
+        self._updateHiddenInput();
 
         return self.render();
       } else {
@@ -466,6 +468,7 @@
         self._height = data;
         self._calcWH();
         self._updateCanvasWH();
+        self._updateHiddenInput();
 
         return self.render();
       } else {
@@ -1323,6 +1326,18 @@
       if (self._ctx) {
         self._ctx.clearRect(self._x, self._y, oldW, oldH);
       }
+    },
+
+    /**
+     * Update the size and position of the hidden input (better UX on mobile).
+     */
+    _updateHiddenInput: function() {
+      var self = this;
+
+      self._hiddenInput.style.left = (self._x + self._extraX + (self._canvas ? self._canvas.offsetLeft : 0)) + 'px';
+      self._hiddenInput.style.top = (self._y + self._extraY + (self._canvas ? self._canvas.offsetTop : 0)) + 'px';
+      self._hiddenInput.style.width = (self._width + self._padding * 2) + 'px';
+      self._hiddenInput.style.height = (self._height + self._padding * 2) + 'px';
     },
 
     /**
