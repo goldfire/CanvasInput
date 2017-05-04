@@ -1469,4 +1469,15 @@
       };
     }
   };
+
+  if (typeof exports !== 'undefined') {
+    if (typeof module !== 'undefined' && module.exports) {
+      exports = module.exports = window.CanvasInput;
+    }
+    exports.CanvasInput = window.CanvasInput;
+  } else if (typeof define !== 'undefined' && define.amd) {
+    define('CanvasInput', (function() { return root.CanvasInput = window.CanvasInput; })() );
+  } else {
+    root.CanvasInput = window.CanvasInput;
+  }
 })();
