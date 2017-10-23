@@ -129,6 +129,9 @@
     self._hiddenInput.style.opacity = 0;
     self._hiddenInput.style.pointerEvents = 'none';
     self._hiddenInput.style.zIndex = 0;
+    // hide native blue text cursor on iOS
+    self._hiddenInput.style.transform = 'scale(0)';
+
     self._updateHiddenInput();
     if (self._maxlength) {
       self._hiddenInput.maxLength = self._maxlength;
