@@ -94,21 +94,30 @@
     }
 
     // setup main canvas events
+    self._removals = [];
     if (self._canvas) {
-      self._canvas.addEventListener('mousemove', function(e) {
+      var mousemove = function(e) {
         e = e || window.event;
         self.mousemove(e, self);
-      }, false);
+      };
 
-      self._canvas.addEventListener('mousedown', function(e) {
+      var mousedown = function(e) {
         e = e || window.event;
         self.mousedown(e, self);
-      }, false);
+      };
 
-      self._canvas.addEventListener('mouseup', function(e) {
+      var mouseup = function(e) {
         e = e || window.event;
         self.mouseup(e, self);
-      }, false);
+      };
+
+      self._canvas.addEventListener('mousemove', mousemove, false);
+      self._canvas.addEventListener('mousedown', mousedown, false);
+      self._canvas.addEventListener('mouseup', mouseup, false);
+
+      self._removals.push([self._canvas, 'mousemove', mousemove, false]);
+      self._removals.push([self._canvas, 'mousedown', mousedown, false]);
+      self._removals.push([self._canvas, 'mouseup', mouseup, false]);
     }
 
     // setup a global mouseup to blur the input outside of the canvas
@@ -121,6 +130,9 @@
     };
     window.addEventListener('mouseup', autoBlur, true);
     window.addEventListener('touchend', autoBlur, true);
+
+    self._removals.push([window, 'mouseup', autoBlur, true]);
+    self._removals.push([window, 'touchend', autoBlur, true]);
 
     // create the hidden input element
     self._hiddenInput = document.createElement('input');
@@ -1207,6 +1219,14 @@
 
       // remove the hidden input box
       document.body.removeChild(self._hiddenInput);
+
+      // remove event listeners
+      var removals = self._removals;
+      for (var i=0; i<removals.length; i++) {
+        var removal = removals[i];
+        var obj = removal[0];
+        obj.removeEventListener.apply(obj, removal.slice(1));
+      }
 
       // remove off-DOM canvas
       self._renderCanvas = null;
