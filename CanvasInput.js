@@ -60,6 +60,7 @@
     self._hasFocus = false;
     self._selection = [0, 0];
     self._wasOver = false;
+    self._type = o.type || 'text';
 
     // parse box shadow
     self.boxShadow(self._boxShadow, true);
@@ -1097,6 +1098,11 @@
 
         // clip the text so that it fits within the box
         var text = self._clipText();
+
+        // hide password field properties
+        if (self._type === 'password' && text) {
+          text = text.split('').map(() => '*').join('')
+        }
 
         // draw the selection
         var paddingBorder = self._padding + self._borderWidth + self.shadowT;

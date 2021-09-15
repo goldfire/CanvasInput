@@ -63,6 +63,17 @@ var input = new CanvasInput({
 });
 ```
 
+##### Password input:
+```html
+<canvas id="canvas" width="200" height="50"></canvas>
+```
+```javascript
+var input = new CanvasInput({
+  canvas: document.getElementById('canvas'),
+  type: 'password'
+});
+```
+
 ### Properties
 * **canvas**: `Object` *(`null` by default)* Specify a canvas element to draw the text box to (the off-DOM canvas can be accessed through a helper method if you want to leave this blank and handle it on your own).
 * **x**: `Number` *(`0` by default)* X-coordinate position on the canvas.
@@ -95,6 +106,7 @@ var input = new CanvasInput({
 * **selectionColor**: `String` *(`rgba(179, 212, 253, 0.8)` by default)* The default color for the text selection highlight.
 * **placeHolder**: `String` *(`''` by default)* The default place holder text. This text will disappear when the user focusses on the input.
 * **value**: `String` *(`''` by default)* Set the default value for an input.
+* **type**: `String` *(`'text'` by default)* Set to `'password'` to cover passwords with asterix "`*`"
 * **onsubmit**: `Function` *(`function() {}` by default)* Callback fires when user hits the enter key.
 * **onkeydown**: `Function` *(`function() {}` by default)* Callback fires on key down.
 * **onkeyup**: `Function` *(`function() {}` by default)* Callback fires on key up.
