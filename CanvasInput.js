@@ -169,6 +169,20 @@
       }
     });
 
+    // setup the paste listener
+    self._hiddenInput.addEventListener('paste', function(e) {
+      // Hidden input's value isn't updated until after the paste event is finished.
+      // Delay the updates until it's done so the pasted value exists.
+      setTimeout(function() {
+        // update the canvas input state information from the hidden input
+        self._value = self._hiddenInput.value;
+        self._cursorPos = self._hiddenInput.selectionStart;
+        // update selection to hidden input's selection in case user did keyboard-based selection
+        self._selection = [self._hiddenInput.selectionStart, self._hiddenInput.selectionEnd];
+        self.render();
+      }, 1);
+    });
+
     // add this to the buffer
     inputs.push(self);
     self._inputsIndex = inputs.length - 1;
